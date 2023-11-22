@@ -25,5 +25,5 @@ public class Product {
     @Column(name = "PRICE")
     private double price;
     @Column(name = "DISCOUNT")
-    private BigDecimal discount;
+    private double discount;
 }

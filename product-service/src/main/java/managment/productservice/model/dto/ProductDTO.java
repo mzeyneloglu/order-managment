@@ -3,9 +3,22 @@ package managment.productservice.model.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import managment.productservice.model.Product;
 
 @Getter
 @Setter
 // @ApiModel(value = "Product DTO", description = "Product DTO")
 public class ProductDTO {
+    private String productName;
+    private double productPrice;
+    private String productDescription;
+    private String productCategory;
+
+    public void toDto(Product product) {
+        this.productName = product.getName();
+        this.productPrice = product.getPrice();
+        this.productDescription = product.getDescription();
+        this.productCategory = product.getCategory();
+    }
+
 }

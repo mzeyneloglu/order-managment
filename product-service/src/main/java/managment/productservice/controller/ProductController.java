@@ -26,6 +26,10 @@ public class ProductController {
         return productService.create(productCreateRequest);
 
     }
+    @PostMapping("create-all-products")
+    public void createAll(@RequestBody List<ProductCreateRequest> productCreateRequest){
+        productService.createAll(productCreateRequest);
+    }
 
     @GetMapping("get-product")
     // @ApiOperation(value = "get product")
@@ -48,9 +52,8 @@ public class ProductController {
 
     @PostMapping("apply-discount")
     // @ApiOperation(value = "apply discount")
-    public ResultDiscountResponse applyDiscount(@RequestParam Long productId,
-                                                @RequestParam BigDecimal discount){
-        return productService.applyDiscount(productId, discount);
+    public ResultDiscountResponse applyDiscount(@RequestParam Long productId){
+        return productService.applyDiscount(productId);
     }
 
     @DeleteMapping("delete-product")
