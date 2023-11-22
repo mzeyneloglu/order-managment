@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Table(name = "MN_PRODUCT")
+// @ApiModel(value = "Product model", description = "This model describes a product entity")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
