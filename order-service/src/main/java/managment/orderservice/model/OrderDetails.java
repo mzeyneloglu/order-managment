@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "ORDER_DETAILS")
+@Table(name = "MN_ORDER_DETAILS")
 @Getter
 @Setter
 public class OrderDetails {
@@ -15,7 +15,7 @@ public class OrderDetails {
     private Long id;
 
     @Column(name = "QUANTITY")
-    private String quantity;
+    private int quantity;
 
     @Column(name = "PRODUCT_ID")
     private Long productId;

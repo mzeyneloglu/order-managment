@@ -33,8 +33,8 @@ public class CustomerController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/get")
-    public CustomerDTO get(@RequestParam Long customerId){
+    @GetMapping("/get{customerId}")
+    public CustomerDTO get(@PathVariable Long customerId){
         return customerService.get(customerId);
 
     }

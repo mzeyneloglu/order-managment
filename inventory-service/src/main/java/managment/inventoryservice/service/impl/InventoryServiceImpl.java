@@ -69,4 +69,14 @@ public class InventoryServiceImpl implements InventoryService {
             return inventoryResponse;
         }).collect(Collectors.toList());
     }
+
+    @Override
+    public InventoryResponse getInventoryByProduct(Long productId) {
+        Inventory inventory = inventoryRepository.findInventoryByProductId(productId).orElseThrow();
+        InventoryResponse inventoryResponse = new InventoryResponse();
+        inventoryResponse.setInventoryId(inventory.getId());
+        inventoryResponse.setQuantity(inventory.getQuantity());
+        inventoryResponse.setProductId(inventory.getProductId());
+        return inventoryResponse;
+    }
 }

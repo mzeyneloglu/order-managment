@@ -9,8 +9,6 @@ import managment.productservice.model.dto.ProductDTO;
 import managment.productservice.model.dto.UpdateProductDTO;
 import managment.productservice.service.ProductService;
 import org.springframework.web.bind.annotation.*;
-
-import java.math.BigDecimal;
 import java.util.List;
 
 @RestController

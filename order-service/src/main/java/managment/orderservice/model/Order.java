@@ -10,7 +10,6 @@ import lombok.Setter;
 @Table(name = "MN_ORDER")
 public class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 

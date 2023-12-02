@@ -29,5 +29,9 @@ public class InventoryController {
     public List<InventoryResponse> getInventories(){
         return inventoryService.getInventories();
     }
+    @GetMapping("/get-inventory-by-product/{productId}")
+    public InventoryResponse getInventoryByProduct(@PathVariable Long productId){
+        return inventoryService.getInventoryByProduct(productId);
+    }
 
 }

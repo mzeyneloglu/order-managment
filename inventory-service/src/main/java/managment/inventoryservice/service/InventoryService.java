@@ -11,4 +11,6 @@ public interface InventoryService {
     InventoryResponse getInventory(Long inventoryId);
 
     List<InventoryResponse> getInventories();
+
+    InventoryResponse getInventoryByProduct(Long productId);
 }
