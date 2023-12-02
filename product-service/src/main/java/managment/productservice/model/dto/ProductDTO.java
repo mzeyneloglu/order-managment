@@ -9,12 +9,14 @@ import managment.productservice.model.Product;
 @Setter
 // @ApiModel(value = "Product DTO", description = "Product DTO")
 public class ProductDTO {
+    private Long productId;
     private String productName;
     private double productPrice;
     private String productDescription;
     private String productCategory;
 
     public void toDto(Product product) {
+        this.productId = product.getId();
         this.productName = product.getName();
         this.productPrice = product.getPrice();
         this.productDescription = product.getDescription();

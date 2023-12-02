@@ -31,9 +31,9 @@ public class ProductController {
         productService.createAll(productCreateRequest);
     }
 
-    @GetMapping("get-product")
+    @GetMapping("get-product/{productId}")
     // @ApiOperation(value = "get product")
-    public ProductDTO get(@RequestParam Long productId){
+    public ProductDTO get(@PathVariable Long productId){
         return productService.get(productId);
 
     }

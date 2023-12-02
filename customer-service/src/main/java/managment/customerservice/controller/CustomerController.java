@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import managment.customerservice.constants.ApiEndpoints;
 import managment.customerservice.controller.request.CreateCustomerRequest;
 import managment.customerservice.controller.request.UpdateCustomerRequest;
+import managment.customerservice.controller.response.ProductClientProductResponse;
 import managment.customerservice.model.CustomerDTO;
 import managment.customerservice.service.CustomerService;
 import org.springframework.http.HttpStatus;
@@ -53,5 +54,9 @@ public class CustomerController {
     @DeleteMapping("/delete")
     public void delete(@RequestParam Long customerId){
         customerService.delete(customerId);
+    }
+    @GetMapping("/get-product")
+    public ProductClientProductResponse getProduct(@RequestHeader Long productId){
+        return customerService.getProduct(productId);
     }
 }

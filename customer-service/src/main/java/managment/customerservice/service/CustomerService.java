@@ -2,6 +2,7 @@ package managment.customerservice.service;
 
 import managment.customerservice.controller.request.CreateCustomerRequest;
 import managment.customerservice.controller.request.UpdateCustomerRequest;
+import managment.customerservice.controller.response.ProductClientProductResponse;
 import managment.customerservice.model.CustomerDTO;
 import org.springframework.stereotype.Service;
 
@@ -19,4 +20,6 @@ public interface CustomerService {
 
     void delete(Long customerId);
     void createMany(List<CreateCustomerRequest> createCustomerRequestList);
+
+    ProductClientProductResponse getProduct(Long productId);
 }

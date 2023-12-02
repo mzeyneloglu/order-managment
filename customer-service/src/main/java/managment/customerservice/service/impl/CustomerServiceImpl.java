@@ -3,19 +3,16 @@ package managment.customerservice.service.impl;
 import lombok.RequiredArgsConstructor;
 import managment.customerservice.controller.request.CreateCustomerRequest;
 import managment.customerservice.controller.request.UpdateCustomerRequest;
+import managment.customerservice.controller.response.ProductClientProductResponse;
 import managment.customerservice.exception.BusinessLogicException;
 import managment.customerservice.model.Customer;
 import managment.customerservice.model.CustomerDTO;
 import managment.customerservice.model.dto.ProductDTO;
 import managment.customerservice.repository.CustomerRepository;
 import managment.customerservice.service.CustomerService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,14 +53,19 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    public ProductClientProductResponse getProduct(Long productId) {
+        if (productId < 0 || ObjectUtils.isEmpty(productId)) {
+            throw new BusinessLogicException("Bad request");
+        }
+        return restTemplate.getForObject("http://localhost:8181/api/product/get-product/" + productId, ProductClientProductResponse.class);
+    }
+
+    @Override
     public CustomerDTO get(Long customerId) {
         if (ObjectUtils.isEmpty(customerId)) {
             throw new BusinessLogicException("Cannot be null");
         }
-
-        List<ProductDTO> productDTO = Collections.singletonList(restTemplate.getForObject("http://localhost:8181/api/product/list-of-products", ProductDTO.class));
         Customer customer = customerRepository.findById(customerId).orElseThrow();
-        System.out.println(productDTO);
         return new CustomerDTO(customer);
     }
 
