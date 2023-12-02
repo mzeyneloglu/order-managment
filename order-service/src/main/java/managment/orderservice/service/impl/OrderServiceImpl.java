@@ -66,12 +66,14 @@ public class OrderServiceImpl implements OrderService {
         orderDetails.setStatus("1");
         orderDetailsRepository.save(orderDetails);
 
+        restTemplate.postForObject("http://localhost:8184/api/inventory/set-quantity/"+productId+"/"+(inventoryClientResponse.getQuantity()-quantity), null, Void.class);
+
         OrderResponse orderResponse = new OrderResponse();
         orderResponse.setQuantity(quantity);
         orderResponse.setCustomerClientResponse(customerClientResponse);
         orderResponse.setProductClientResponse(productClientResponse);
         orderResponse.setDateOfOrder(order.getDateOfOrder());
-        orderResponse.setMessage("Order created successfully");
+        orderResponse.setMessage("Order created successfully" + "and updated quantity in stock");
 
         return orderResponse;
     }

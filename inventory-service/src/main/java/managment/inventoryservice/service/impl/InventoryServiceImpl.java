@@ -79,4 +79,13 @@ public class InventoryServiceImpl implements InventoryService {
         inventoryResponse.setProductId(inventory.getProductId());
         return inventoryResponse;
     }
+    @Override
+    public void updateQuantity(int quantity, Long productId) {
+        Inventory inventory = inventoryRepository.findInventoryByProductId(productId).orElseThrow();
+        if (ObjectUtils.isEmpty(inventory)){
+            throw new BusinessLogicException("INVENTORY_NOT_FOUND");
+        }
+        inventory.setQuantity(quantity);
+        inventoryRepository.save(inventory);
+    }
 }

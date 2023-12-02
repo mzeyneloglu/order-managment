@@ -33,5 +33,9 @@ public class InventoryController {
     public InventoryResponse getInventoryByProduct(@PathVariable Long productId){
         return inventoryService.getInventoryByProduct(productId);
     }
+    @PostMapping("/set-quantity/{productId}/{quantity}")
+    public void updateQuantity(@PathVariable(value = "quantity") int quantity, @PathVariable(value = "productId") Long productId){
+        inventoryService.updateQuantity(quantity, productId);
+    }
 
 }

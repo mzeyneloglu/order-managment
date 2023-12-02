@@ -13,4 +13,4 @@ public interface InventoryService {
     List<InventoryResponse> getInventories();
 
     InventoryResponse getInventoryByProduct(Long productId);
-}
+    void updateQuantity(int quantity, Long productId);}
