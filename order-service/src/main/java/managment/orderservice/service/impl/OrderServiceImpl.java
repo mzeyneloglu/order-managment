@@ -11,7 +11,13 @@ import managment.orderservice.model.OrderDetails;
 import managment.orderservice.repository.OrderDetailsRepository;
 import managment.orderservice.repository.OrderRepository;
 import managment.orderservice.service.OrderService;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestTemplate;
 
@@ -73,8 +79,21 @@ public class OrderServiceImpl implements OrderService {
         orderResponse.setCustomerClientResponse(customerClientResponse);
         orderResponse.setProductClientResponse(productClientResponse);
         orderResponse.setDateOfOrder(order.getDateOfOrder());
-        orderResponse.setMessage("Order created successfully" + "and updated quantity in stock");
+        orderResponse.setMessage("Order created successfully");
+
+        sendSms(customerClientResponse, orderResponse);
 
         return orderResponse;
     }
+
+    private void sendSms(CustomerClientResponse customerClientResponse, OrderResponse orderResponse) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        map.add("phone", customerClientResponse.getCustomerPhone());
+        map.add("message", orderResponse.getMessage());
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+        restTemplate.exchange("http://localhost:8182/api/customer/send-sms", HttpMethod.POST, request, Void.class);
+    }
+
 }

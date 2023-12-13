@@ -7,9 +7,10 @@ import managment.customerservice.controller.response.ProductClientProductRespons
 import managment.customerservice.exception.BusinessLogicException;
 import managment.customerservice.model.Customer;
 import managment.customerservice.model.CustomerDTO;
-import managment.customerservice.model.dto.ProductDTO;
 import managment.customerservice.repository.CustomerRepository;
 import managment.customerservice.service.CustomerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestTemplate;
@@ -20,7 +21,9 @@ import java.util.stream.Collectors;
 @Service
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
+
     private final RestTemplate restTemplate;
+    private final Logger logger = LoggerFactory.getLogger(CustomerServiceImpl.class);
     @Override
     public void create(CreateCustomerRequest createCustomerRequest) {
         if (createCustomerRequest == null) {
@@ -58,6 +61,14 @@ public class CustomerServiceImpl implements CustomerService {
             throw new BusinessLogicException("Bad request");
         }
         return restTemplate.getForObject("http://localhost:8181/api/product/get-product/" + productId, ProductClientProductResponse.class);
+    }
+
+    @Override
+    public void sendSms(String phone, String message) {
+        if (ObjectUtils.isEmpty(phone)) {
+            throw new BusinessLogicException("Bad request");
+        }
+        logger.info("Sending SMS to {} with message {}", phone, message);
     }
 
     @Override

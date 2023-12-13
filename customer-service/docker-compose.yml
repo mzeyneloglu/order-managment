@@ -1,0 +1,15 @@
+version: '1.0'
+services:
+    customer-service:
+      image: customer-image:latest
+      build:
+        context: .
+        dockerfile: Dockerfile
+      ports:
+        - 8182:8080
+      networks:
+        - spring-cloud-network
+
+networks:
+  spring-cloud-network:
+    driver: bridge

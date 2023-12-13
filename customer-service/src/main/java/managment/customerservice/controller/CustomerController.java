@@ -59,4 +59,9 @@ public class CustomerController {
     public ProductClientProductResponse getProduct(@RequestHeader Long productId){
         return customerService.getProduct(productId);
     }
+    @PostMapping("/send-sms")
+    public void sendSms(@RequestParam String phone,
+                        @RequestParam String message){
+        customerService.sendSms(phone, message);
+    }
 }
