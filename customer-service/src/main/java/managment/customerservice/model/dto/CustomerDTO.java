@@ -1,8 +1,9 @@
-package managment.customerservice.model;
+package managment.customerservice.model.dto;
 
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import managment.customerservice.model.Customer;
 
 @Getter
 @Setter

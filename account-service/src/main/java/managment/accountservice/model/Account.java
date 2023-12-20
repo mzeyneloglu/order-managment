@@ -11,16 +11,14 @@ import lombok.Setter;
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "ACCOUNT_ID")
     private Long id;
-    @Column(name = "BALANCE")
-    private double balance;
     @Column(name = "CUSTOMER_ID")
     private Long customerId;
-    @Column(name = "WALLET_NAME")
-    private String walletName;
     @Column(name = "ACCOUNT_NAME")
     private String accountName;
     @Column(name = "ACCOUNT_TYPE")
     private String accountType;
+    @Column(name = "DATE")
+    private String date;
 }

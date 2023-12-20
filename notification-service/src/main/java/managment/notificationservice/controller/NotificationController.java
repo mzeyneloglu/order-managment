@@ -13,10 +13,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(ApiEndpoints.END_POINT)
 @RequiredArgsConstructor
 public class NotificationController {
-    private NotificationService notificationService;
-    @PostMapping(path = "/send-notification")
-    public void sendNotification(@RequestBody NotificationRequest notificationRequest) {
-        notificationService.sendNotification(notificationRequest);
-    }
 
 }

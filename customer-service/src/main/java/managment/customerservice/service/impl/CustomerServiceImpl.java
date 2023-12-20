@@ -6,7 +6,7 @@ import managment.customerservice.controller.request.UpdateCustomerRequest;
 import managment.customerservice.controller.response.ProductClientProductResponse;
 import managment.customerservice.exception.BusinessLogicException;
 import managment.customerservice.model.Customer;
-import managment.customerservice.model.CustomerDTO;
+import managment.customerservice.model.dto.CustomerDTO;
 import managment.customerservice.repository.CustomerRepository;
 import managment.customerservice.service.CustomerService;
 import org.slf4j.Logger;

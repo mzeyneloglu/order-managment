@@ -22,10 +22,9 @@ public class ProductController {
     // @ApiOperation(value = "create product")
     public ProductCreateResponse create(@RequestBody ProductCreateRequest productCreateRequest) {
         return productService.create(productCreateRequest);
-
     }
-    @PostMapping("create-all-products")
-    public void createAll(@RequestBody List<ProductCreateRequest> productCreateRequest){
+    @PostMapping("create-many-products")
+    public void createMany(@RequestBody List<ProductCreateRequest> productCreateRequest){
         productService.createAll(productCreateRequest);
     }
 
@@ -33,7 +32,6 @@ public class ProductController {
     // @ApiOperation(value = "get product")
     public ProductDTO get(@PathVariable Long productId){
         return productService.get(productId);
-
     }
     @GetMapping("list-of-products")
     // @ApiOperation(value = "list of products")

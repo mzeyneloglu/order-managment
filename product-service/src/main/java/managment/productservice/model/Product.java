@@ -1,6 +1,7 @@
 package managment.productservice.model;
 
 import jakarta.persistence.*;
+import jakarta.ws.rs.DefaultValue;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,5 +26,6 @@ public class Product {
     @Column(name = "PRICE")
     private double price;
     @Column(name = "DISCOUNT")
+    @DefaultValue("0.0")
     private double discount;
 }

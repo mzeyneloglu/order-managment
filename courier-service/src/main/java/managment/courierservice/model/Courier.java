@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Table(name = "MN_COURIER")
 public class Courier {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +21,5 @@ public class Courier {
     private String courierPhone;
     @Column(name = "COURIER_COMPANY")
     private String courierCompany;
-    @Column(name = "ORDER_ID")
-    private Long orderId;
 
 }
