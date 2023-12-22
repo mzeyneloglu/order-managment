@@ -7,10 +7,7 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class AccountRequest {
-    private Long customerId;
+public class AccountUpdateRequest {
     private String accountName;
     private String accountType;
-    private String date;
-
 }

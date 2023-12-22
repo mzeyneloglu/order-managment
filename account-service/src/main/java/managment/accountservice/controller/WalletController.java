@@ -7,7 +7,6 @@ import managment.accountservice.controller.response.WalletResponse;
 import managment.accountservice.controller.response.WalletUpdateResponse;
 import managment.accountservice.service.WalletService;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -22,20 +21,21 @@ public class WalletController {
     public void createWallet(@RequestBody WalletRequest walletRequest) {
         walletService.create(walletRequest);
     }
-    @GetMapping("/get-wallet")
-    public WalletResponse get() {
-        return walletService.get();
+    @GetMapping("/get-wallet/{id}")
+    public WalletResponse get(@PathVariable Long id){
+        return walletService.get(id);
     }
-    @GetMapping("get-wallets-by-account")
-    public List<WalletResponse> getWalletsByAccount(){
-        return walletService.getWalletsByAccount();
+    @GetMapping("/get-wallets-by-account/{accountId}")
+    public List<WalletResponse> getWalletsByAccount(@PathVariable Long accountId){
+        return walletService.getWalletsByAccount(accountId);
     }
     @PostMapping("/update-wallet")
-    public WalletUpdateResponse update(){
+    public WalletUpdateResponse update(@RequestParam Long id,
+                                       @RequestBody WalletRequest walletRequest){
         return walletService.update();
     }
     @DeleteMapping("/delete-wallet")
-    public WalletDeleteResponse delete(){
-        return walletService.delete();
+    public WalletDeleteResponse delete(@RequestParam Long id){
+        return walletService.delete(id);
     }
 }

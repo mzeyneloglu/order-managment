@@ -2,40 +2,111 @@ package managment.accountservice.service.impl;
 
 import jakarta.transaction.Transactional;
 import managment.accountservice.controller.request.AccountRequest;
+import managment.accountservice.controller.request.AccountUpdateRequest;
 import managment.accountservice.controller.response.AccountDeleteResponse;
 import managment.accountservice.controller.response.AccountResponse;
 import managment.accountservice.controller.response.AccountUpdateResponse;
+import managment.accountservice.exception.BusinessLogicException;
+import managment.accountservice.model.Account;
+import managment.accountservice.model.dto.CustomerDTO;
+import managment.accountservice.repository.AccountRepository;
 import managment.accountservice.service.AccountService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
 @Service
 @Transactional
 public class AccountServiceImpl implements AccountService {
-    @Override
-    public void create(AccountRequest accountRequest) {
-
+    private final AccountRepository accountRepository;
+    private final RestTemplate restTemplate;
+    public AccountServiceImpl(AccountRepository accountRepository, RestTemplate restTemplate) {
+        this.accountRepository = accountRepository;
+        this.restTemplate = restTemplate;
     }
 
     @Override
-    public AccountResponse get() {
-        return null;
+    public void create(AccountRequest accountRequest) {
+        if (ObjectUtils.isEmpty(accountRequest)) {
+            throw new BusinessLogicException("ACCOUNT_ID_NOT_FOUND");
+        }
+
+        if (ObjectUtils.isEmpty(accountRequest.getCustomerId())){
+            throw new BusinessLogicException("CUSTOMER_ID_NOT_FOUND");
+        }
+
+        CustomerDTO customerDTO = restTemplate.getForObject("http://localhost:8182/api/customer/get" + accountRequest.getCustomerId(), CustomerDTO.class);
+
+        if (ObjectUtils.isEmpty(customerDTO)) {
+            throw new BusinessLogicException("CUSTOMER_NOT_FOUND");
+        }
+
+        if (accountRepository.findByCustomerId(accountRequest.getCustomerId()).isPresent()) {
+            throw new BusinessLogicException("ACCOUNT_ALREADY_EXISTS");
+        }
+
+        Account account = new Account();
+        account.setAccountName(accountRequest.getAccountName());
+        account.setAccountType(accountRequest.getAccountType());
+        account.setDate(accountRequest.getDate());
+        account.setCustomerId(accountRequest.getCustomerId());
+
+        accountRepository.save(account);
+    }
+
+    @Override
+    public AccountResponse get(Long id) {
+        Account account = accountRepository.findById(id).orElseThrow(() -> new BusinessLogicException("ACCOUNT_NOT_FOUND"));
+        AccountResponse accountResponse = new AccountResponse();
+        accountResponse.setAccountName(account.getAccountName());
+        accountResponse.setAccountType(account.getAccountType());
+        accountResponse.setDate(account.getDate());
+        return accountResponse;
     }
 
     @Override
     public List<AccountResponse> getAccounts() {
-        return null;
+        List<Account> accounts = accountRepository.findAll();
+        return accounts.stream().map(account -> {
+            CustomerDTO customerDTO = restTemplate.getForObject("http://localhost:8182/api/customer/get" + account.getCustomerId(), CustomerDTO.class);
+            AccountResponse accountResponse = new AccountResponse();
+            accountResponse.setAccountName(account.getAccountName());
+            accountResponse.setAccountType(account.getAccountType());
+            accountResponse.setDate(account.getDate());
+            accountResponse.setCustomerDTO(customerDTO);
+            return accountResponse;
+        }).toList();
     }
 
     @Override
-    public AccountUpdateResponse update(Long id) {
+    public AccountUpdateResponse update(Long id, AccountUpdateRequest accountUpdateRequest) {
+        if (ObjectUtils.isEmpty(accountUpdateRequest)) {
+            throw new BusinessLogicException("ACCOUNT_ID_NOT_FOUND");
+        }
+        Account account = accountRepository.findById(id).orElseThrow(() -> new BusinessLogicException("ACCOUNT_NOT_FOUND"));
+        account.setAccountName(accountUpdateRequest.getAccountName());
+        account.setAccountType(accountUpdateRequest.getAccountType());
 
-        return null;
+        CustomerDTO customerDTO = restTemplate.getForObject("http://localhost:8182/api/customer/get" + account.getCustomerId(), CustomerDTO.class);
+
+        AccountUpdateResponse accountUpdateResponse = new AccountUpdateResponse();
+        accountUpdateResponse.setAccountName(account.getAccountName());
+        accountUpdateResponse.setAccountType(account.getAccountType());
+        accountUpdateResponse.setCustomer(customerDTO);
+
+        return accountUpdateResponse;
     }
 
     @Override
     public AccountDeleteResponse delete(Long id) {
-        return null;
+        Account account = accountRepository.findById(id).orElseThrow(() -> new BusinessLogicException("ACCOUNT_NOT_FOUND"));
+        AccountDeleteResponse accountDeleteResponse = new AccountDeleteResponse();
+        accountDeleteResponse.setAccountName(account.getAccountName());
+        accountDeleteResponse.setAccountType(account.getAccountType());
+        accountRepository.delete(account);
+
+        return accountDeleteResponse;
     }
 }

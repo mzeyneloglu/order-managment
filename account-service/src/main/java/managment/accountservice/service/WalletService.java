@@ -10,11 +10,11 @@ import java.util.List;
 public interface WalletService {
     void create(WalletRequest walletRequest);
 
-    WalletResponse get();
+    WalletResponse get(Long id);
 
-    List<WalletResponse> getWalletsByAccount();
+    List<WalletResponse> getWalletsByAccount(Long accountId);
 
     WalletUpdateResponse update();
 
-    WalletDeleteResponse delete();
+    WalletDeleteResponse delete(Long id);
 }
