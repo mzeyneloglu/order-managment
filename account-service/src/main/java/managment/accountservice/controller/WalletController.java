@@ -2,6 +2,7 @@ package managment.accountservice.controller;
 
 import managment.accountservice.constants.ApiEndpoints;
 import managment.accountservice.controller.request.WalletRequest;
+import managment.accountservice.controller.request.WalletUpdateRequest;
 import managment.accountservice.controller.response.WalletDeleteResponse;
 import managment.accountservice.controller.response.WalletResponse;
 import managment.accountservice.controller.response.WalletUpdateResponse;
@@ -13,7 +14,6 @@ import java.util.List;
 @RequestMapping(ApiEndpoints.END_POINT)
 public class WalletController {
     private final WalletService walletService;
-
     public WalletController(WalletService walletService) {
         this.walletService = walletService;
     }
@@ -31,8 +31,8 @@ public class WalletController {
     }
     @PostMapping("/update-wallet")
     public WalletUpdateResponse update(@RequestParam Long id,
-                                       @RequestBody WalletRequest walletRequest){
-        return walletService.update();
+                                       @RequestBody WalletUpdateRequest walletRequest){
+        return walletService.update(id, walletRequest);
     }
     @DeleteMapping("/delete-wallet")
     public WalletDeleteResponse delete(@RequestParam Long id){

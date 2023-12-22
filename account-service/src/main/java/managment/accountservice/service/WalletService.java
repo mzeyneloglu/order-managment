@@ -1,6 +1,7 @@
 package managment.accountservice.service;
 
 import managment.accountservice.controller.request.WalletRequest;
+import managment.accountservice.controller.request.WalletUpdateRequest;
 import managment.accountservice.controller.response.WalletDeleteResponse;
 import managment.accountservice.controller.response.WalletResponse;
 import managment.accountservice.controller.response.WalletUpdateResponse;
@@ -14,7 +15,7 @@ public interface WalletService {
 
     List<WalletResponse> getWalletsByAccount(Long accountId);
 
-    WalletUpdateResponse update();
+    WalletUpdateResponse update(Long id, WalletUpdateRequest walletRequest);
 
     WalletDeleteResponse delete(Long id);
 }

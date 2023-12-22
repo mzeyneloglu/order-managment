@@ -37,7 +37,7 @@ public class AccountServiceImpl implements AccountService {
             throw new BusinessLogicException("CUSTOMER_ID_NOT_FOUND");
         }
 
-        CustomerDTO customerDTO = restTemplate.getForObject("http://localhost:8182/api/customer/get" + accountRequest.getCustomerId(), CustomerDTO.class);
+        CustomerDTO customerDTO = getCustomerDTO(accountRequest.getCustomerId());
 
         if (ObjectUtils.isEmpty(customerDTO)) {
             throw new BusinessLogicException("CUSTOMER_NOT_FOUND");
@@ -59,24 +59,29 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountResponse get(Long id) {
         Account account = accountRepository.findById(id).orElseThrow(() -> new BusinessLogicException("ACCOUNT_NOT_FOUND"));
+        return getAccountResponse(account);
+    }
+
+    private AccountResponse getAccountResponse(Account account) {
+        CustomerDTO customerDTO = getCustomerDTO(account.getCustomerId());
         AccountResponse accountResponse = new AccountResponse();
         accountResponse.setAccountName(account.getAccountName());
         accountResponse.setAccountType(account.getAccountType());
         accountResponse.setDate(account.getDate());
+        accountResponse.setCustomerDTO(customerDTO);
         return accountResponse;
+    }
+
+    private CustomerDTO getCustomerDTO(Long account) {
+        CustomerDTO customerDTO = restTemplate.getForObject("http://localhost:8182/api/customer/get" + account, CustomerDTO.class);
+        return customerDTO;
     }
 
     @Override
     public List<AccountResponse> getAccounts() {
         List<Account> accounts = accountRepository.findAll();
         return accounts.stream().map(account -> {
-            CustomerDTO customerDTO = restTemplate.getForObject("http://localhost:8182/api/customer/get" + account.getCustomerId(), CustomerDTO.class);
-            AccountResponse accountResponse = new AccountResponse();
-            accountResponse.setAccountName(account.getAccountName());
-            accountResponse.setAccountType(account.getAccountType());
-            accountResponse.setDate(account.getDate());
-            accountResponse.setCustomerDTO(customerDTO);
-            return accountResponse;
+            return getAccountResponse(account);
         }).toList();
     }
 
@@ -89,7 +94,7 @@ public class AccountServiceImpl implements AccountService {
         account.setAccountName(accountUpdateRequest.getAccountName());
         account.setAccountType(accountUpdateRequest.getAccountType());
 
-        CustomerDTO customerDTO = restTemplate.getForObject("http://localhost:8182/api/customer/get" + account.getCustomerId(), CustomerDTO.class);
+        CustomerDTO customerDTO = getCustomerDTO(account.getCustomerId());
 
         AccountUpdateResponse accountUpdateResponse = new AccountUpdateResponse();
         accountUpdateResponse.setAccountName(account.getAccountName());

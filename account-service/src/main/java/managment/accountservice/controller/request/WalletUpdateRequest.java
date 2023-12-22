@@ -12,4 +12,5 @@ public class WalletUpdateRequest {
     private double balance;
     private String walletType;
     private String date;
+    private String expiryDate;
 }
