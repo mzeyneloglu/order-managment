@@ -14,16 +14,12 @@ public class ProductDTO {
     private double productPrice;
     private String productDescription;
     private String productCategory;
-    private String productCode;;
-
-
     public void toDto(Product product) {
         this.productId = product.getId();
         this.productName = product.getName();
         this.productPrice = product.getPrice();
         this.productDescription = product.getDescription();
         this.productCategory = product.getCategory();
-        this.productCode = product.getProductCode();
     }
 
 }

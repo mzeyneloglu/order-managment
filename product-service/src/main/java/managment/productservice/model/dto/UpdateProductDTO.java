@@ -16,7 +16,6 @@ public class UpdateProductDTO {
     private String productCategory;
     private double productPrice;
     private double productDiscount;
-    private String productCode;
     private String message;
 
     public void toDto(Product product) {

@@ -26,11 +26,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductCreateResponse create(ProductCreateRequest productCreateRequest) {
-        if(Objects.isNull(productCreateRequest)){
+        if(Objects.isNull(productCreateRequest))
             throw new BusinessLogicException("productCreateRequest cannot be null");
-        }
-        Product product = getProduct(productCreateRequest);
 
+        Product product = getProduct(productCreateRequest);
         ProductCreateResponse productCreateResponse = new ProductCreateResponse();
         productCreateResponse.toDto(product);
         productCreateResponse.setMessage("Product created successfully");
@@ -42,9 +41,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDTO get(Long productId) {
         Product product = productRepository.findById(productId).orElse(null);
-        if(ObjectUtils.isEmpty(product) ){
+        if(ObjectUtils.isEmpty(product) )
             throw new BusinessLogicException("Product not found");
-        }
+
         ProductDTO productDTO = new ProductDTO();
         productDTO.toDto(product);
         return productDTO;
@@ -53,9 +52,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDTO> getAll() {
         List<Product> products = productRepository.findAll();
-        if (ObjectUtils.isEmpty(products)) {
+        if (ObjectUtils.isEmpty(products))
             throw new BusinessLogicException("Products not found");
-        }
+
         return products.stream().map(product -> {
             ProductDTO productDTO = new ProductDTO();
             productDTO.toDto(product);
@@ -65,19 +64,18 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public UpdateProductDTO update(Long productId, ProductCreateRequest productCreateRequest) {
-        if (Objects.isNull(productCreateRequest)){
+        if (Objects.isNull(productCreateRequest))
             throw new BusinessLogicException("Request cannot be null");
-        }
+
         Product product = productRepository.findById(productId).orElse(null);
-        if (ObjectUtils.isEmpty(product)){
+        if (ObjectUtils.isEmpty(product))
             throw new BusinessLogicException("Product not found");
-        }
+
         product.setName(productCreateRequest.getProductName());
         product.setDescription(productCreateRequest.getProductDescription());
         product.setCategory(productCreateRequest.getProductCategory());
         product.setPrice(productCreateRequest.getProductPrice());
         product.setDiscount(productCreateRequest.getProductDiscount());
-        product.setProductCode(productCreateRequest.getProductCode());
 
         UpdateProductDTO updateProductDTO = new UpdateProductDTO();
         updateProductDTO.toDto(product);
@@ -91,9 +89,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ResultDiscountResponse applyDiscount(Long productId) {
         Product product = productRepository.findById(productId).orElse(null);
-        if (ObjectUtils.isEmpty(product)){
+        if (ObjectUtils.isEmpty(product))
             throw new BusinessLogicException("Product not found");
-        }
+
         product.setPrice((product.getPrice()) - (product.getPrice() * product.getDiscount()));
 
         ResultDiscountResponse resultDiscountResponse = new ResultDiscountResponse();
@@ -107,18 +105,18 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void delete(Long productId) {
         Product product = productRepository.findById(productId).orElse(null);
-        if (ObjectUtils.isEmpty(product)){
+        if (ObjectUtils.isEmpty(product))
             throw new BusinessLogicException("Product not found");
-        }
+
         productRepository.delete(product);
 
     }
 
     @Override
     public void createAll(List<ProductCreateRequest> productCreateRequest) {
-        if (Objects.isNull(productCreateRequest)){
+        if (Objects.isNull(productCreateRequest))
             throw new BusinessLogicException("Request cannot be null");
-        }
+
         productRepository.saveAll(productCreateRequest.stream().map(this::getProduct).collect(Collectors.toList()));
     }
 
@@ -129,7 +127,6 @@ public class ProductServiceImpl implements ProductService {
         product.setCategory(productCreateRequest1.getProductCategory());
         product.setPrice(productCreateRequest1.getProductPrice());
         product.setDiscount(productCreateRequest1.getProductDiscount());
-        product.setProductCode(productCreateRequest1.getProductCode());
         return product;
     }
 }

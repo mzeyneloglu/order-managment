@@ -27,7 +27,4 @@ public class Product {
     @Column(name = "DISCOUNT")
     @DefaultValue("0.0")
     private double discount;
-    @Column(name = "PRODUCT_CODE")
-    @DefaultValue("OTHER")
-    private String productCode;
 }
