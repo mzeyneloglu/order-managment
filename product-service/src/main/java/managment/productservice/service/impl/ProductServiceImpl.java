@@ -29,12 +29,7 @@ public class ProductServiceImpl implements ProductService {
         if(Objects.isNull(productCreateRequest)){
             throw new BusinessLogicException("productCreateRequest cannot be null");
         }
-        Product product = new Product();
-        product.setName(productCreateRequest.getProductName());
-        product.setDescription(productCreateRequest.getProductDescription());
-        product.setCategory(productCreateRequest.getProductCategory());
-        product.setPrice(productCreateRequest.getProductPrice());
-        product.setDiscount(productCreateRequest.getProductDiscount());
+        Product product = getProduct(productCreateRequest);
 
         ProductCreateResponse productCreateResponse = new ProductCreateResponse();
         productCreateResponse.toDto(product);
@@ -82,6 +77,7 @@ public class ProductServiceImpl implements ProductService {
         product.setCategory(productCreateRequest.getProductCategory());
         product.setPrice(productCreateRequest.getProductPrice());
         product.setDiscount(productCreateRequest.getProductDiscount());
+        product.setProductCode(productCreateRequest.getProductCode());
 
         UpdateProductDTO updateProductDTO = new UpdateProductDTO();
         updateProductDTO.toDto(product);
@@ -123,15 +119,17 @@ public class ProductServiceImpl implements ProductService {
         if (Objects.isNull(productCreateRequest)){
             throw new BusinessLogicException("Request cannot be null");
         }
-        productRepository.saveAll(productCreateRequest.stream().map(productCreateRequest1 -> {
-            Product product = new Product();
-            product.setName(productCreateRequest1.getProductName());
-            product.setDescription(productCreateRequest1.getProductDescription());
-            product.setCategory(productCreateRequest1.getProductCategory());
-            product.setPrice(productCreateRequest1.getProductPrice());
-            product.setDiscount(productCreateRequest1.getProductDiscount());
-            return product;
-        }).collect(Collectors.toList()));
+        productRepository.saveAll(productCreateRequest.stream().map(this::getProduct).collect(Collectors.toList()));
+    }
 
+    private Product getProduct(ProductCreateRequest productCreateRequest1) {
+        Product product = new Product();
+        product.setName(productCreateRequest1.getProductName());
+        product.setDescription(productCreateRequest1.getProductDescription());
+        product.setCategory(productCreateRequest1.getProductCategory());
+        product.setPrice(productCreateRequest1.getProductPrice());
+        product.setDiscount(productCreateRequest1.getProductDiscount());
+        product.setProductCode(productCreateRequest1.getProductCode());
+        return product;
     }
 }

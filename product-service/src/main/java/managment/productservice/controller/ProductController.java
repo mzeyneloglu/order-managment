@@ -14,7 +14,6 @@ import java.util.List;
 @RestController
 @RequestMapping(value = ApiEndpoints.END_POINT)
 @RequiredArgsConstructor
-// @Api(value = "Product api documentation", tags = "Product Controller")
 public class ProductController {
     private final ProductService productService;
 

@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Table(name = "MN_PRODUCT")
-// @ApiModel(value = "Product model", description = "This model describes a product entity")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,4 +27,7 @@ public class Product {
     @Column(name = "DISCOUNT")
     @DefaultValue("0.0")
     private double discount;
+    @Column(name = "PRODUCT_CODE")
+    @DefaultValue("OTHER")
+    private String productCode;
 }

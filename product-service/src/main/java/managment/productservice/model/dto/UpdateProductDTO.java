@@ -10,13 +10,13 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Data
-// @ApiModel(value = "UpdateProductDTO", description = "Return update product dto when call update")
 public class UpdateProductDTO {
     private String productName;
     private String productDescription;
     private String productCategory;
     private double productPrice;
     private double productDiscount;
+    private String productCode;
     private String message;
 
     public void toDto(Product product) {
