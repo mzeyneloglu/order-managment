@@ -25,10 +25,6 @@ public class WalletController {
     public WalletResponse get(@PathVariable Long id){
         return walletService.get(id);
     }
-    @GetMapping("/get-wallets-by-account/{accountId}")
-    public List<WalletResponse> getWalletsByAccount(@PathVariable Long accountId){
-        return walletService.getWalletsByAccount(accountId);
-    }
     @PostMapping("/update-wallet")
     public WalletUpdateResponse update(@RequestParam Long id,
                                        @RequestBody WalletUpdateRequest walletRequest){

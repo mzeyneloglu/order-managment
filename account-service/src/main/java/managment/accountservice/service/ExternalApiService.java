@@ -8,5 +8,5 @@ import java.util.List;
 public interface ExternalApiService {
     AccountClientResponse getAccount(Long customerId);
 
-    List<WalletClientResponse> getWallets(Long accountId);
+    WalletClientResponse getWallet(Long accountId);
 }

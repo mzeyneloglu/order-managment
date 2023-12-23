@@ -33,9 +33,14 @@ public class WalletServiceImpl implements WalletService {
         if (ObjectUtils.isEmpty(walletRequest))
             throw new BusinessLogicException("WALLET_REQUEST_NULL");
 
-        List<Wallet> wallets = walletRepository.findWalletsByAccountId(walletRequest.getAccountId());
-        if (wallets.size() >= 3)
-            throw new BusinessLogicException("ACCOUNT_ALREADY_HAVE_WALLET");
+        if (walletRepository.findByAccountId(walletRequest.getAccountId()).isPresent())
+            throw new BusinessLogicException("WALLET_ALREADY_EXISTS");
+
+        if (accountRepository.findById(walletRequest.getAccountId()).isEmpty())
+            throw new BusinessLogicException("ACCOUNT_NOT_FOUND");
+
+        if (walletRequest.getBalance() < 0 || walletRequest.getBalance() > 10000)
+            throw new BusinessLogicException("WALLET_BALANCE_NEGATIVE");
 
         Wallet wallet = getWallet(walletRequest);
         walletRepository.save(wallet);
@@ -44,12 +49,6 @@ public class WalletServiceImpl implements WalletService {
     public WalletResponse get(Long id) {
         Wallet wallet = walletRepository.findById(id).orElseThrow(() -> new BusinessLogicException("WALLET_NOT_FOUND"));
         return getWalletResponse(wallet);
-    }
-
-    @Override
-    public List<WalletResponse> getWalletsByAccount(Long accountId) {
-        List<Wallet> wallets = walletRepository.findWalletsByAccountId(accountId);
-        return wallets.stream().map(this::getWalletResponse).toList();
     }
     @Override
     public WalletUpdateResponse update(Long id, WalletUpdateRequest walletRequest) {

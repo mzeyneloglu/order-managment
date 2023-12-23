@@ -13,8 +13,6 @@ public interface WalletService {
 
     WalletResponse get(Long id);
 
-    List<WalletResponse> getWalletsByAccount(Long accountId);
-
     WalletUpdateResponse update(Long id, WalletUpdateRequest walletRequest);
 
     WalletDeleteResponse delete(Long id);

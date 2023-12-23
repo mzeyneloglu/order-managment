@@ -6,6 +6,7 @@ import managment.accountservice.controller.response.WalletClientResponse;
 import managment.accountservice.controller.response.AccountClientResponse;
 import managment.accountservice.exception.BusinessLogicException;
 import managment.accountservice.model.Account;
+import managment.accountservice.model.Wallet;
 import managment.accountservice.repository.AccountRepository;
 import managment.accountservice.repository.WalletRepository;
 import managment.accountservice.service.ExternalApiService;
@@ -32,17 +33,17 @@ public class ExternalApiServiceImpl implements ExternalApiService {
     }
 
     @Override
-    public List<WalletClientResponse> getWallets(Long accountId) {
-        return walletRepository.findWalletsByAccountId(accountId)
-                .stream()
-                .map(wallet -> {
-                    WalletClientResponse walletClientResponse = new WalletClientResponse();
-                    walletClientResponse.setWalletId(wallet.getId());
-                    walletClientResponse.setWalletName(wallet.getName());
-                    walletClientResponse.setWalletType(wallet.getType());
-                    walletClientResponse.setDate(wallet.getCreationDate());
-                    walletClientResponse.setBalance(wallet.getBalance());
-                    return walletClientResponse;
-                }).toList();
+    public WalletClientResponse getWallet(Long accountId) {
+        Wallet wallet = walletRepository.findByAccountId(accountId).orElseThrow(()
+                -> new BusinessLogicException("WALLET_NOT_FOUND"));
+
+        WalletClientResponse walletClientResponse = new WalletClientResponse();
+        walletClientResponse.setWalletId(wallet.getId());
+        walletClientResponse.setBalance(wallet.getBalance());
+        walletClientResponse.setWalletName(wallet.getName());
+        walletClientResponse.setWalletType(wallet.getType());
+        walletClientResponse.setDate(wallet.getCreationDate());
+        return walletClientResponse;
+
     }
 }
