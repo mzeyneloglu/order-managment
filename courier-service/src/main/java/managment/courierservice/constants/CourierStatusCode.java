@@ -1,6 +1,5 @@
 package managment.courierservice.constants;
 
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor

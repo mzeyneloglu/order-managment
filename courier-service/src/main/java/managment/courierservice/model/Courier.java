@@ -21,5 +21,8 @@ public class Courier {
     private String courierPhone;
     @Column(name = "COURIER_COMPANY")
     private String courierCompany;
-
+    @Column(name = "COURIER_STATUS")
+    private String courierStatus;
+    @Column(name = "CR_PACKAGE_NUMBER")
+    private int crPackageNumber;
 }

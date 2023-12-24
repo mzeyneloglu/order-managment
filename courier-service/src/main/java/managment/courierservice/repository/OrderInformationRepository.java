@@ -1,9 +1,9 @@
 package managment.courierservice.repository;
 
-import managment.courierservice.model.Courier;
+import managment.courierservice.model.OrderInformation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CourierRepository extends JpaRepository<Courier, Long> {
+public interface OrderInformationRepository extends JpaRepository<OrderInformation, Long> {
 }

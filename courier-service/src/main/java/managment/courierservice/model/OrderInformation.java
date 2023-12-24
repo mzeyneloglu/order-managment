@@ -17,8 +17,6 @@ public class OrderInformation {
     private long orderId;
     @Column(name = "COURIER_ID")
     private long courierId;
-    @Column(name = "CUSTOMER_ID")
-    private long customerId;
     @Column(name = "STATUS_CODE")
     private String statusCode;
 
