@@ -9,4 +9,6 @@ public interface ExternalApiService {
     AccountClientResponse getAccount(Long customerId);
 
     WalletClientResponse getWallet(Long accountId);
+
+    void updateBalance(Long accountId, double amount);
 }

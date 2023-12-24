@@ -11,7 +11,6 @@ import managment.accountservice.repository.AccountRepository;
 import managment.accountservice.repository.WalletRepository;
 import managment.accountservice.service.ExternalApiService;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
 
 @Service
@@ -45,5 +44,11 @@ public class ExternalApiServiceImpl implements ExternalApiService {
         walletClientResponse.setDate(wallet.getCreationDate());
         return walletClientResponse;
 
+    }
+    @Override
+    public void updateBalance(Long accountId, double amount) {
+        Wallet wallet = walletRepository.findByAccountId(accountId).orElseThrow(() -> new BusinessLogicException("WALLET_NOT_FOUND"));
+        wallet.setBalance(wallet.getBalance() - amount);
+        walletRepository.save(wallet);
     }
 }

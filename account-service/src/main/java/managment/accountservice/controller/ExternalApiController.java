@@ -13,12 +13,18 @@ import org.springframework.web.bind.annotation.*;
 public class ExternalApiController {
     private final ExternalApiService externalApiService;
 
-    @GetMapping("/external/get-wallets/{accountId}")
+    @GetMapping("/external/get-wallet/{accountId}")
     public WalletClientResponse getWallet(@PathVariable Long accountId) {
         return externalApiService.getWallet(accountId);
     }
     @GetMapping("/external/get-account/{customerId}")
     public AccountClientResponse getAccount(@PathVariable Long customerId) {
         return externalApiService.getAccount(customerId);
+    }
+    @PostMapping("/external/update-balance/{accountId}/{amount}")
+    public void updateBalance(@PathVariable Long accountId,
+                              @PathVariable double amount) {
+        externalApiService.updateBalance(accountId, amount);
+
     }
 }
