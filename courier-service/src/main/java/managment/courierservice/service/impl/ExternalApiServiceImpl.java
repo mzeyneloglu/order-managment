@@ -12,6 +12,8 @@ import managment.courierservice.service.ExternalApiService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -31,14 +33,12 @@ public class ExternalApiServiceImpl implements ExternalApiService {
             throw new BusinessLogicException("ORDER_ID_IS_EMPTY");
 
         List<Courier> courierList = courierRepository.findAll();
-        List<Courier> freeCourierList = courierList.stream().map(courier -> courier.getCourierStatus().equals("FREE") ? courier : null).toList();
-        if (ObjectUtils.isEmpty(freeCourierList))
-            throw new BusinessLogicException("NO_FREE_COURIER");
+        List<Courier> freeCourierList = courierList.stream()
+                .filter(courier -> courier.getCourierStatus().equals("FREE")).toList();
 
         Courier tempCourier = freeCourierList
                 .stream()
-                .min(Comparator.comparing(Courier::getCrPackageNumber))
-                .orElseThrow(() -> new BusinessLogicException("COURIER_NOT_FOUND"));
+                .min(Comparator.comparing(Courier::getCrPackageNumber)).orElseThrow(() -> new BusinessLogicException("NOT_FOUND_COURIER"));
 
         OrderInformation orderInformation = new OrderInformation();
         orderInformation.setCourierId(tempCourier.getId());
@@ -46,14 +46,22 @@ public class ExternalApiServiceImpl implements ExternalApiService {
         orderInformation.setStatusCode(String.valueOf(CourierStatusCode.GETTING_READY));
         orderInformationRepository.save(orderInformation);
 
-        List<Courier> busyCourierList = courierList.stream().map(courier -> courier.getCourierStatus().equals("BUSY") ? courier : null).toList();
+        List<Courier> busyCourierList = courierList.stream()
+                .filter(courier -> courier.getCourierStatus().equals("BUSY")).toList();
+
         if (ObjectUtils.isEmpty(freeCourierList))
             throw new BusinessLogicException("NO_BUSY_COURIER");
 
-        busyCourierList.forEach(courier -> {
-            courier.setCourierStatus("FREE");
-            courierRepository.save(courier);
-        });
+        List<Courier> busyRandomCourierList = pickRandomCourier(busyCourierList);
+        List<Courier> freeRandomCourierList = pickRandomCourier(freeCourierList);
+        for (Courier busyCourier : busyRandomCourierList) {
+           busyCourier.setCourierStatus("FREE");
+           courierRepository.save(busyCourier);
+        }
+        for (Courier freeCourier : freeRandomCourierList) {
+            freeCourier.setCourierStatus("BUSY");
+            courierRepository.save(freeCourier);
+        }
 
         tempCourier.setCrPackageNumber(tempCourier.getCrPackageNumber() + 1);
         tempCourier.setCourierStatus("BUSY");
@@ -61,5 +69,11 @@ public class ExternalApiServiceImpl implements ExternalApiService {
         CourierClientResponse response = new CourierClientResponse();
         response.setPackageStatus(String.valueOf(CourierStatusCode.GETTING_READY));
         return response;
+    }
+
+    private List<Courier> pickRandomCourier(List<Courier> lst) {
+        List<Courier> copyArray = new ArrayList<>(lst);
+        Collections.shuffle(copyArray);
+        return 2 > copyArray.size() ? copyArray.subList(0, copyArray.size()) : copyArray.subList(0, 2);
     }
 }
