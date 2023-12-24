@@ -1,29 +1,18 @@
 package managment.orderservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import managment.orderservice.controller.response.CustomerClientResponse;
-import managment.orderservice.controller.response.InventoryClientResponse;
-import managment.orderservice.controller.response.OrderResponse;
-import managment.orderservice.controller.response.ProductClientResponse;
+import managment.orderservice.controller.response.*;
 import managment.orderservice.exception.BusinessLogicException;
 import managment.orderservice.model.Order;
 import managment.orderservice.model.OrderDetails;
 import managment.orderservice.repository.OrderDetailsRepository;
 import managment.orderservice.repository.OrderRepository;
 import managment.orderservice.service.OrderService;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestTemplate;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -34,31 +23,43 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderResponse createOrder(Long customerId, Long productId, int quantity) {
-        if (ObjectUtils.isEmpty(customerId) || ObjectUtils.isEmpty(productId) || ObjectUtils.isEmpty(quantity)) {
+        if (ObjectUtils.isEmpty(customerId) || ObjectUtils.isEmpty(productId) || ObjectUtils.isEmpty(quantity))
             throw new BusinessLogicException("REQUEST_CANNOT_BE_EMPTY");
-        }
+
+        if (quantity == 0)
+            throw new BusinessLogicException("QUANTITY_CANNOT_BE_ZERO");
+
         CustomerClientResponse customerClientResponse = restTemplate.getForObject("http://localhost:8182/api/customer/get"+customerId, CustomerClientResponse.class);
-        if (ObjectUtils.isEmpty(customerClientResponse)) {
+        if (ObjectUtils.isEmpty(customerClientResponse))
             throw new BusinessLogicException("CUSTOMER_NOT_FOUND");
-        }
+
         ProductClientResponse productClientResponse = restTemplate.getForObject("http://localhost:8181/api/product/get-product/"+productId, ProductClientResponse.class);
 
-        if (ObjectUtils.isEmpty(productClientResponse)) {
+        if (ObjectUtils.isEmpty(productClientResponse))
             throw new BusinessLogicException("PRODUCT_NOT_FOUND");
-        }
 
         InventoryClientResponse inventoryClientResponse = restTemplate.getForObject("http://localhost:8184/api/inventory/get-inventory-by-product/"+productId, InventoryClientResponse.class);
 
-        if (ObjectUtils.isEmpty(inventoryClientResponse)) {
+        if (ObjectUtils.isEmpty(inventoryClientResponse))
             throw new BusinessLogicException("INVENTORY_NOT_FOUND");
-        }
 
-        if (inventoryClientResponse.getQuantity() < quantity) {
-            throw new BusinessLogicException("NOT_FOUND_PRODUCT_QUANTITY_IN_INVENTORY");
-        }
+        if (inventoryClientResponse.getQuantity() < quantity)
+            throw new BusinessLogicException("OUT_OF_STOCK");
+
+        AccountClientResponse accountClientResponse = restTemplate.getForObject("http://localhost:8188/api/account/external/get-account/"+customerId, AccountClientResponse.class);
+
+        if (ObjectUtils.isEmpty(accountClientResponse))
+            throw new BusinessLogicException("ACCOUNT_NOT_FOUND");
+
+        WalletClientResponse walletClientResponse = restTemplate.getForObject("http://localhost:8188/api/account/external/get-wallet/" + accountClientResponse.getAccountId(), WalletClientResponse.class);
+
+        if (ObjectUtils.isEmpty(walletClientResponse))
+            throw new BusinessLogicException("WALLET_NOT_FOUND");
+
+        if (walletClientResponse.getBalance() < (productClientResponse.getProductPrice() * quantity))
+            throw new BusinessLogicException("BALANCE_NOT_ENOUGH");
 
         Order order = new Order();
-        order.setId(UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE);
         order.setCustomerId(customerId);
         order.setOrderDetails(productClientResponse.getProductDescription());
         order.setDateOfOrder(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
@@ -72,28 +73,21 @@ public class OrderServiceImpl implements OrderService {
         orderDetails.setStatus("1");
         orderDetailsRepository.save(orderDetails);
 
-        restTemplate.postForObject("http://localhost:8184/api/inventory/set-quantity/"+productId+"/"+(inventoryClientResponse.getQuantity()-quantity), null, Void.class);
+        restTemplate.postForObject("http://localhost:8188/api/account/external/update-balance/" + accountClientResponse.getAccountId() + "/" + (productClientResponse.getProductPrice() * quantity), null, Void.class);
+
+        CourierClientResponse courierClientResponse = restTemplate.postForObject("http://localhost:8190/api/courier/set-courier/" + order.getId(),
+                null,
+                CourierClientResponse.class);
+
+        restTemplate.postForObject("http://localhost:8184/api/inventory/set-quantity/" + productId + "/" + (inventoryClientResponse.getQuantity()-quantity), null, Void.class);
 
         OrderResponse orderResponse = new OrderResponse();
         orderResponse.setQuantity(quantity);
         orderResponse.setCustomerClientResponse(customerClientResponse);
         orderResponse.setProductClientResponse(productClientResponse);
         orderResponse.setDateOfOrder(order.getDateOfOrder());
+        orderResponse.setCourierClientResponse(courierClientResponse);
         orderResponse.setMessage("Order created successfully");
-
-        sendSms(customerClientResponse, orderResponse);
-
         return orderResponse;
     }
-
-    private void sendSms(CustomerClientResponse customerClientResponse, OrderResponse orderResponse) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
-        map.add("phone", customerClientResponse.getCustomerPhone());
-        map.add("message", orderResponse.getMessage());
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-        restTemplate.exchange("http://localhost:8182/api/customer/send-sms", HttpMethod.POST, request, Void.class);
-    }
-
 }

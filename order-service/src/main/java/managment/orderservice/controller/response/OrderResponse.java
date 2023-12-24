@@ -12,6 +12,7 @@ public class OrderResponse {
     private ProductClientResponse productClientResponse;
     private int quantity;
     private String dateOfOrder;
+    private CourierClientResponse courierClientResponse;
     private String message;
 
 }

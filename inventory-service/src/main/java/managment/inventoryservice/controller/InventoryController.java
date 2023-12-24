@@ -15,6 +15,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class InventoryController {
     private final InventoryService inventoryService;
+
+    @PostMapping("/create")
+    public InventoryCreateResponse create(@RequestParam Long productId,
+                                          @RequestParam int quantity){
+        return inventoryService.create(productId, quantity);
+    }
     @GetMapping("/get-inventory{inventoryId}")
     public InventoryResponse getInventory(@PathVariable Long inventoryId){
         return inventoryService.getInventory(inventoryId);
@@ -29,7 +35,7 @@ public class InventoryController {
     }
     @PostMapping("/set-quantity/{productId}/{quantity}")
     public void setQuantity(@PathVariable(value = "quantity") int quantity,
-                               @PathVariable(value = "productId") Long productId){
+                            @PathVariable(value = "productId") Long productId){
         inventoryService.updateQuantity(quantity, productId);
     }
 

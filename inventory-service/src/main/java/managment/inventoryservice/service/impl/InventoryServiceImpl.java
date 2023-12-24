@@ -22,11 +22,11 @@ public class InventoryServiceImpl implements InventoryService {
     private final RestTemplate restTemplate;
     @Override
     public InventoryCreateResponse create(Long productId, int quantity) {
-        ProductClientResponse productClientResponse = restTemplate.getForObject("http://localhost:8181/api/product/get-product/"+productId, ProductClientResponse.class);
+        ProductClientResponse productClientResponse = restTemplate.getForObject("http://localhost:8181/api/product/get-product/"
+                + productId, ProductClientResponse.class);
 
-        if (ObjectUtils.isEmpty(productClientResponse)){
+        if (ObjectUtils.isEmpty(productClientResponse))
             throw new BusinessLogicException("PRODUCT_NOT_FOUND");
-        }
 
         Inventory inventory = new Inventory();
         inventory.setQuantity(quantity);
@@ -81,10 +81,7 @@ public class InventoryServiceImpl implements InventoryService {
     }
     @Override
     public void updateQuantity(int quantity, Long productId) {
-        Inventory inventory = inventoryRepository.findInventoryByProductId(productId).orElseThrow();
-        if (ObjectUtils.isEmpty(inventory)){
-            throw new BusinessLogicException("INVENTORY_NOT_FOUND");
-        }
+        Inventory inventory = inventoryRepository.findInventoryByProductId(productId).orElseThrow(() -> new BusinessLogicException("INVENTORY_NOT_FOUND"));
         inventory.setQuantity(quantity);
         inventoryRepository.save(inventory);
     }

@@ -5,8 +5,6 @@ import jakarta.ws.rs.DefaultValue;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-
 @Entity
 @Getter
 @Setter
@@ -25,6 +23,5 @@ public class Product {
     @Column(name = "PRICE")
     private double price;
     @Column(name = "DISCOUNT")
-    @DefaultValue("0.0")
-    private double discount;
+    private double discount = 0.0;
 }
