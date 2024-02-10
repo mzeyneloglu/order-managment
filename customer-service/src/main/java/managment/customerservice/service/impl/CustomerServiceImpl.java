@@ -76,7 +76,7 @@ public class CustomerServiceImpl implements CustomerService {
         if (ObjectUtils.isEmpty(customerId)) {
             throw new BusinessLogicException("Cannot be null");
         }
-        Customer customer = customerRepository.findById(customerId).orElseThrow();
+        Customer customer = customerRepository.findById(customerId).orElse(null);
         return new CustomerDTO(customer);
     }
 

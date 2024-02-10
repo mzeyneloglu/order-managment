@@ -27,12 +27,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductCreateResponse create(ProductCreateRequest productCreateRequest) {
         if(Objects.isNull(productCreateRequest))
-            throw new BusinessLogicException("productCreateRequest cannot be null");
+            throw new BusinessLogicException("REQUEST_CANNOT_BE_NULL");
 
         Product product = getProduct(productCreateRequest);
         ProductCreateResponse productCreateResponse = new ProductCreateResponse();
         productCreateResponse.toDto(product);
-        productCreateResponse.setMessage("Product created successfully");
+        productCreateResponse.setMessage("PRODUCT_CREATED");
 
         productRepository.save(product);
         return productCreateResponse;
@@ -42,7 +42,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductDTO get(Long productId) {
         Product product = productRepository.findById(productId).orElse(null);
         if(ObjectUtils.isEmpty(product) )
-            throw new BusinessLogicException("Product not found");
+            throw new BusinessLogicException("PRODUCT_NOT_FOUND");
 
         ProductDTO productDTO = new ProductDTO();
         productDTO.toDto(product);
@@ -53,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDTO> getAll() {
         List<Product> products = productRepository.findAll();
         if (ObjectUtils.isEmpty(products))
-            throw new BusinessLogicException("Products not found");
+            throw new BusinessLogicException("PRODUCT_NOT_FOUND");
 
         return products.stream().map(product -> {
             ProductDTO productDTO = new ProductDTO();
@@ -65,11 +65,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public UpdateProductDTO update(Long productId, ProductCreateRequest productCreateRequest) {
         if (Objects.isNull(productCreateRequest))
-            throw new BusinessLogicException("Request cannot be null");
+            throw new BusinessLogicException("REQUEST_CANNOT_BE_NULL");
 
         Product product = productRepository.findById(productId).orElse(null);
         if (ObjectUtils.isEmpty(product))
-            throw new BusinessLogicException("Product not found");
+            throw new BusinessLogicException("PRODUCT_NOT_FOUND");
 
         product.setName(productCreateRequest.getProductName());
         product.setDescription(productCreateRequest.getProductDescription());
@@ -79,7 +79,7 @@ public class ProductServiceImpl implements ProductService {
 
         UpdateProductDTO updateProductDTO = new UpdateProductDTO();
         updateProductDTO.toDto(product);
-        updateProductDTO.setMessage("Product updated successfully");
+        updateProductDTO.setMessage("PRODUCT_UPDATED");
 
         productRepository.save(product);
         return updateProductDTO;
@@ -90,13 +90,13 @@ public class ProductServiceImpl implements ProductService {
     public ResultDiscountResponse applyDiscount(Long productId) {
         Product product = productRepository.findById(productId).orElse(null);
         if (ObjectUtils.isEmpty(product))
-            throw new BusinessLogicException("Product not found");
+            throw new BusinessLogicException("PRODUCT_NOT_FOUND");
 
         product.setPrice((product.getPrice()) - (product.getPrice() * product.getDiscount()));
 
         ResultDiscountResponse resultDiscountResponse = new ResultDiscountResponse();
         resultDiscountResponse.setNewPrice(product.getPrice());
-        resultDiscountResponse.setMessage("Discount applied to product successfully");
+        resultDiscountResponse.setMessage("APPLIED_DISCOUNT_TO_PRODUCT");
         productRepository.save(product);
         return resultDiscountResponse;
 
@@ -106,7 +106,7 @@ public class ProductServiceImpl implements ProductService {
     public void delete(Long productId) {
         Product product = productRepository.findById(productId).orElse(null);
         if (ObjectUtils.isEmpty(product))
-            throw new BusinessLogicException("Product not found");
+            throw new BusinessLogicException("PRODUCT_NOT_FOUND");
 
         productRepository.delete(product);
 
@@ -115,7 +115,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void createAll(List<ProductCreateRequest> productCreateRequest) {
         if (Objects.isNull(productCreateRequest))
-            throw new BusinessLogicException("Request cannot be null");
+            throw new BusinessLogicException("REQUEST_CANNOT_BE_NULL");
 
         productRepository.saveAll(productCreateRequest.stream().map(this::getProduct).collect(Collectors.toList()));
     }

@@ -54,6 +54,15 @@ public class ExternalApiServiceImpl implements ExternalApiService {
 
         List<Courier> busyRandomCourierList = pickRandomCourier(busyCourierList);
         List<Courier> freeRandomCourierList = pickRandomCourier(freeCourierList);
+        setBusyAndFreeStatusCourier(busyRandomCourierList, freeRandomCourierList);
+
+        updateCourierPackageNumber(tempCourier);
+        CourierClientResponse response = new CourierClientResponse();
+        response.setPackageStatus(String.valueOf(CourierStatusCode.GETTING_READY));
+        return response;
+    }
+
+    private void setBusyAndFreeStatusCourier(List<Courier> busyRandomCourierList, List<Courier> freeRandomCourierList) {
         for (Courier busyCourier : busyRandomCourierList) {
            busyCourier.setCourierStatus("FREE");
            courierRepository.save(busyCourier);
@@ -62,13 +71,12 @@ public class ExternalApiServiceImpl implements ExternalApiService {
             freeCourier.setCourierStatus("BUSY");
             courierRepository.save(freeCourier);
         }
+    }
 
+    private void updateCourierPackageNumber(Courier tempCourier) {
         tempCourier.setCrPackageNumber(tempCourier.getCrPackageNumber() + 1);
         tempCourier.setCourierStatus("BUSY");
         courierRepository.save(tempCourier);
-        CourierClientResponse response = new CourierClientResponse();
-        response.setPackageStatus(String.valueOf(CourierStatusCode.GETTING_READY));
-        return response;
     }
 
     private List<Courier> pickRandomCourier(List<Courier> lst) {

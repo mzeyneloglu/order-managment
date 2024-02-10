@@ -47,7 +47,8 @@ public class ExternalApiServiceImpl implements ExternalApiService {
     }
     @Override
     public void updateBalance(Long accountId, double amount) {
-        Wallet wallet = walletRepository.findByAccountId(accountId).orElseThrow(() -> new BusinessLogicException("WALLET_NOT_FOUND"));
+        Wallet wallet = walletRepository.findByAccountId(accountId).orElseThrow(()
+                -> new BusinessLogicException("WALLET_NOT_FOUND"));
         wallet.setBalance(wallet.getBalance() - amount);
         walletRepository.save(wallet);
     }
