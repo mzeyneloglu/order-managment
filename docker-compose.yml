@@ -1,0 +1,139 @@
+version: '3.3'
+services:
+  mysqldb:
+    image: mysql
+    container_name: mysql-container
+    networks:
+      - organization-mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=test123
+      - MYSQL_DATABASE=ord_mng
+    ports:
+      - "3309:3306"
+
+  discovery-server:
+    container_name: discovery-service-container
+    image: discovery-service:latest
+    ports:
+      - "8761:8761"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - microservices-network
+
+  apigateway-server:
+    container_name: apigateway-service-container
+    image: apigateway-service:latest
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka/
+    ports:
+      - "9191:9191"
+    networks:
+      - microservices-network
+    links:
+      - discovery-server
+    depends_on:
+      - discovery-server
+
+  customer-server:
+    container_name: customer-service-container
+    image: customer-service:latest
+    ports:
+      - "8182:8182"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka/
+    networks:
+      - microservices-network
+      - organization-mysql
+    depends_on:
+      - discovery-server
+    links:
+      - discovery-server
+
+  product-server:
+    container_name: product-service-container
+    image: product-service:latest
+    ports:
+      - "8181:8181"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka/
+    networks:
+      - organization-mysql
+      - microservices-network
+    depends_on:
+      - discovery-server
+    links:
+      - discovery-server
+
+  account-server:
+    container_name: account-service-container
+    image: account-service:latest
+    ports:
+      - "8188:8188"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka/
+    networks:
+      - microservices-network
+      - organization-mysql
+    depends_on:
+      - discovery-server
+    links:
+      - discovery-server
+
+  order-server:
+    container_name: order-service-container
+    image: order-service:latest
+    ports:
+      - "8183:8183"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka/
+    networks:
+      - microservices-network
+      - organization-mysql
+    depends_on:
+      - discovery-server
+    links:
+      - discovery-server
+
+  inventory-server:
+    container_name: inventory-service-container
+    image: inventory-service:latest
+    ports:
+      - "8184:8184"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka/
+    networks:
+      - microservices-network
+      - organization-mysql
+    depends_on:
+      - discovery-server
+    links:
+      - discovery-server
+
+  courier-server:
+    container_name: courier-service-container
+    image: courier-service:latest
+    ports:
+      - "8190:8190"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka/
+    networks:
+      - microservices-network
+      - organization-mysql
+    depends_on:
+      - discovery-server
+    links:
+      - discovery-server
+
+networks:
+  microservices-network:
+    driver: bridge
+  organization-mysql:
+    driver: bridge
