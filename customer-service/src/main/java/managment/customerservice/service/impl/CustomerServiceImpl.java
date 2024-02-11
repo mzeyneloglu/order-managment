@@ -60,7 +60,7 @@ public class CustomerServiceImpl implements CustomerService {
         if (productId < 0 || ObjectUtils.isEmpty(productId)) {
             throw new BusinessLogicException("Bad request");
         }
-        return restTemplate.getForObject("http://localhost:8181/api/product/get-product/" + productId, ProductClientProductResponse.class);
+        return restTemplate.getForObject("http://localhost:9191/api/product/get-product/" + productId, ProductClientProductResponse.class);
     }
 
     @Override

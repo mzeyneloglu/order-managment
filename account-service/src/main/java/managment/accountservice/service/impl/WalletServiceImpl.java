@@ -65,7 +65,7 @@ public class WalletServiceImpl implements WalletService {
         WalletResponse walletResponse = getWalletResponse(wallet);
 
         Account account = accountRepository.findById(wallet.getAccountId()).orElseThrow(() -> new BusinessLogicException("ACCOUNT_NOT_FOUND"));
-        CustomerDTO customerDTO = restTemplate.getForObject("http://localhost:8182/api/customer/get" + account.getCustomerId(), CustomerDTO.class);
+        CustomerDTO customerDTO = restTemplate.getForObject("http://localhost:9191/api/customer/get" + account.getCustomerId(), CustomerDTO.class);
 
         if (ObjectUtils.isEmpty(customerDTO))
             throw new BusinessLogicException("CUSTOMER_NOT_FOUND");

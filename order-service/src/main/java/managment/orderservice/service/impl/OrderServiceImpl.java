@@ -29,16 +29,16 @@ public class OrderServiceImpl implements OrderService {
         if (quantity == 0)
             throw new BusinessLogicException("QUANTITY_CANNOT_BE_ZERO");
 
-        CustomerClientResponse customerClientResponse = restTemplate.getForObject("http://localhost:8182/api/customer/get"+customerId, CustomerClientResponse.class);
+        CustomerClientResponse customerClientResponse = restTemplate.getForObject("http://localhost:9191/api/customer/get"+customerId, CustomerClientResponse.class);
         if (ObjectUtils.isEmpty(customerClientResponse))
             throw new BusinessLogicException("CUSTOMER_NOT_FOUND");
 
-        ProductClientResponse productClientResponse = restTemplate.getForObject("http://localhost:8181/api/product/get-product/"+productId, ProductClientResponse.class);
+        ProductClientResponse productClientResponse = restTemplate.getForObject("http://localhost:9191/api/product/get-product/"+productId, ProductClientResponse.class);
 
         if (ObjectUtils.isEmpty(productClientResponse))
             throw new BusinessLogicException("PRODUCT_NOT_FOUND");
 
-        InventoryClientResponse inventoryClientResponse = restTemplate.getForObject("http://localhost:8184/api/inventory/get-inventory-by-product/"+productId, InventoryClientResponse.class);
+        InventoryClientResponse inventoryClientResponse = restTemplate.getForObject("http://localhost:9191/api/inventory/get-inventory-by-product/"+productId, InventoryClientResponse.class);
 
         if (ObjectUtils.isEmpty(inventoryClientResponse))
             throw new BusinessLogicException("INVENTORY_NOT_FOUND");
@@ -46,12 +46,12 @@ public class OrderServiceImpl implements OrderService {
         if (inventoryClientResponse.getQuantity() < quantity)
             throw new BusinessLogicException("OUT_OF_STOCK");
 
-        AccountClientResponse accountClientResponse = restTemplate.getForObject("http://localhost:8188/api/account/external/get-account/"+customerId, AccountClientResponse.class);
+        AccountClientResponse accountClientResponse = restTemplate.getForObject("http://localhost:9191/api/account/external/get-account/"+customerId, AccountClientResponse.class);
 
         if (ObjectUtils.isEmpty(accountClientResponse))
             throw new BusinessLogicException("ACCOUNT_NOT_FOUND");
 
-        WalletClientResponse walletClientResponse = restTemplate.getForObject("http://localhost:8188/api/account/external/get-wallet/" + accountClientResponse.getAccountId(), WalletClientResponse.class);
+        WalletClientResponse walletClientResponse = restTemplate.getForObject("http://localhost:9191/api/account/external/get-wallet/" + accountClientResponse.getAccountId(), WalletClientResponse.class);
 
         if (ObjectUtils.isEmpty(walletClientResponse))
             throw new BusinessLogicException("WALLET_NOT_FOUND");
@@ -73,13 +73,13 @@ public class OrderServiceImpl implements OrderService {
         orderDetails.setStatus("1");
         orderDetailsRepository.save(orderDetails);
 
-        restTemplate.postForObject("http://localhost:8188/api/account/external/update-balance/" + accountClientResponse.getAccountId() + "/" + (productClientResponse.getProductPrice() * quantity), null, Void.class);
+        restTemplate.postForObject("http://localhost:9191/api/account/external/update-balance/" + accountClientResponse.getAccountId() + "/" + (productClientResponse.getProductPrice() * quantity), null, Void.class);
 
-        CourierClientResponse courierClientResponse = restTemplate.postForObject("http://localhost:8190/api/courier/set-courier/" + order.getId(),
+        CourierClientResponse courierClientResponse = restTemplate.postForObject("http://localhost:9191/api/courier/set-courier/" + order.getId(),
                 null,
                 CourierClientResponse.class);
 
-        restTemplate.postForObject("http://localhost:8184/api/inventory/set-quantity/" + productId + "/" + (inventoryClientResponse.getQuantity()-quantity), null, Void.class);
+        restTemplate.postForObject("http://localhost:9191/api/inventory/set-quantity/" + productId + "/" + (inventoryClientResponse.getQuantity()-quantity), null, Void.class);
 
         OrderResponse orderResponse = new OrderResponse();
         orderResponse.setQuantity(quantity);
