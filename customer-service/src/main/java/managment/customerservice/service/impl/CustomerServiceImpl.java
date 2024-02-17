@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import managment.customerservice.controller.request.CreateCustomerRequest;
 import managment.customerservice.controller.request.UpdateCustomerRequest;
 import managment.customerservice.controller.response.ProductClientProductResponse;
+import managment.customerservice.exception.BusinessLogicConstants;
 import managment.customerservice.exception.BusinessLogicException;
 import managment.customerservice.model.Customer;
 import managment.customerservice.model.dto.CustomerDTO;
@@ -27,7 +28,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void create(CreateCustomerRequest createCustomerRequest) {
         if (createCustomerRequest == null) {
-            throw new BusinessLogicException("Request cannot be null");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1001);
         }
         Customer customer = new Customer();
         customer.setName(createCustomerRequest.getCustomerName());
@@ -42,7 +43,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void createMany(List<CreateCustomerRequest> createCustomerRequestList) {
         if (ObjectUtils.isEmpty(createCustomerRequestList)) {
-            throw new BusinessLogicException("Cannot be null");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1001);
         }
         customerRepository.saveAll(createCustomerRequestList.stream().map(request -> {
             Customer customer = new Customer();
@@ -58,23 +59,14 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public ProductClientProductResponse getProduct(Long productId) {
         if (productId < 0 || ObjectUtils.isEmpty(productId)) {
-            throw new BusinessLogicException("Bad request");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1003);
         }
         return restTemplate.getForObject("http://localhost:9191/api/product/get-product/" + productId, ProductClientProductResponse.class);
     }
-
-    @Override
-    public void sendSms(String phone, String message) {
-        if (ObjectUtils.isEmpty(phone)) {
-            throw new BusinessLogicException("Bad request");
-        }
-        logger.info("Sending SMS to {} with message {}", phone, message);
-    }
-
     @Override
     public CustomerDTO get(Long customerId) {
         if (ObjectUtils.isEmpty(customerId)) {
-            throw new BusinessLogicException("Cannot be null");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1002);
         }
         Customer customer = customerRepository.findById(customerId).orElse(null);
         return new CustomerDTO(customer);
@@ -91,7 +83,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void update(UpdateCustomerRequest updateCustomerRequest, Long customerId) {
         if (ObjectUtils.isEmpty(updateCustomerRequest) || ObjectUtils.isEmpty(customerId)) {
-            throw new BusinessLogicException("Cannot be null request or id");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1002);
         }
         Customer customer = customerRepository.findById(customerId).orElseThrow();
         customer.setName(updateCustomerRequest.getCustomerDto().getCustomerName());
@@ -107,7 +99,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void delete(Long customerId) {
         if (ObjectUtils.isEmpty(customerId)) {
-            throw new BusinessLogicException("Cannot be null");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1002);
         }
         customerRepository.deleteById(customerId);
 

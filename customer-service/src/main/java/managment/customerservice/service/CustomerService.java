@@ -10,9 +10,6 @@ import java.util.List;
 
 public interface CustomerService {
     void create(CreateCustomerRequest createCustomerRequest);
-
-    void sendSms(String phone , String message);
-
     CustomerDTO get(Long customerId);
 
     List<CustomerDTO> getAll();
