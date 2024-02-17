@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import managment.productservice.controller.request.ProductCreateRequest;
 import managment.productservice.controller.response.ProductCreateResponse;
 import managment.productservice.controller.response.ResultDiscountResponse;
+import managment.productservice.exception.BusinessLogicConstants;
 import managment.productservice.exception.BusinessLogicException;
 import managment.productservice.model.Product;
 import managment.productservice.model.dto.ProductDTO;
@@ -27,7 +28,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductCreateResponse create(ProductCreateRequest productCreateRequest) {
         if(Objects.isNull(productCreateRequest))
-            throw new BusinessLogicException("REQUEST_CANNOT_BE_NULL");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1001);
 
         Product product = getProduct(productCreateRequest);
         ProductCreateResponse productCreateResponse = new ProductCreateResponse();
@@ -42,7 +43,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductDTO get(Long productId) {
         Product product = productRepository.findById(productId).orElse(null);
         if(ObjectUtils.isEmpty(product) )
-            throw new BusinessLogicException("PRODUCT_NOT_FOUND");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1004);
 
         ProductDTO productDTO = new ProductDTO();
         productDTO.toDto(product);
@@ -53,7 +54,7 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDTO> getAll() {
         List<Product> products = productRepository.findAll();
         if (ObjectUtils.isEmpty(products))
-            throw new BusinessLogicException("PRODUCT_NOT_FOUND");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1004);
 
         return products.stream().map(product -> {
             ProductDTO productDTO = new ProductDTO();
@@ -65,11 +66,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public UpdateProductDTO update(Long productId, ProductCreateRequest productCreateRequest) {
         if (Objects.isNull(productCreateRequest))
-            throw new BusinessLogicException("REQUEST_CANNOT_BE_NULL");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1001);
 
         Product product = productRepository.findById(productId).orElse(null);
         if (ObjectUtils.isEmpty(product))
-            throw new BusinessLogicException("PRODUCT_NOT_FOUND");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1004);
 
         product.setName(productCreateRequest.getProductName());
         product.setDescription(productCreateRequest.getProductDescription());
@@ -90,7 +91,7 @@ public class ProductServiceImpl implements ProductService {
     public ResultDiscountResponse applyDiscount(Long productId) {
         Product product = productRepository.findById(productId).orElse(null);
         if (ObjectUtils.isEmpty(product))
-            throw new BusinessLogicException("PRODUCT_NOT_FOUND");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1004);
 
         product.setPrice((product.getPrice()) - (product.getPrice() * product.getDiscount()));
 
@@ -106,7 +107,7 @@ public class ProductServiceImpl implements ProductService {
     public void delete(Long productId) {
         Product product = productRepository.findById(productId).orElse(null);
         if (ObjectUtils.isEmpty(product))
-            throw new BusinessLogicException("PRODUCT_NOT_FOUND");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1004);
 
         productRepository.delete(product);
 
@@ -115,7 +116,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void createAll(List<ProductCreateRequest> productCreateRequest) {
         if (Objects.isNull(productCreateRequest))
-            throw new BusinessLogicException("REQUEST_CANNOT_BE_NULL");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1001);
 
         productRepository.saveAll(productCreateRequest.stream().map(this::getProduct).collect(Collectors.toList()));
     }
