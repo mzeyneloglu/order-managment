@@ -2,6 +2,7 @@ package managment.orderservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import managment.orderservice.controller.response.*;
+import managment.orderservice.exception.BusinessLogicConstants;
 import managment.orderservice.exception.BusinessLogicException;
 import managment.orderservice.model.Order;
 import managment.orderservice.model.OrderDetails;
@@ -24,40 +25,40 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderResponse createOrder(Long customerId, Long productId, int quantity) {
         if (ObjectUtils.isEmpty(customerId) || ObjectUtils.isEmpty(productId) || ObjectUtils.isEmpty(quantity))
-            throw new BusinessLogicException("REQUEST_CANNOT_BE_EMPTY");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1001);
 
         if (quantity == 0)
-            throw new BusinessLogicException("QUANTITY_CANNOT_BE_ZERO");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1008);
 
         CustomerClientResponse customerClientResponse = restTemplate.getForObject("http://localhost:9191/api/customer/get"+customerId, CustomerClientResponse.class);
         if (ObjectUtils.isEmpty(customerClientResponse))
-            throw new BusinessLogicException("CUSTOMER_NOT_FOUND");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1004);
 
         ProductClientResponse productClientResponse = restTemplate.getForObject("http://localhost:9191/api/product/get-product/"+productId, ProductClientResponse.class);
 
         if (ObjectUtils.isEmpty(productClientResponse))
-            throw new BusinessLogicException("PRODUCT_NOT_FOUND");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1004);
 
         InventoryClientResponse inventoryClientResponse = restTemplate.getForObject("http://localhost:9191/api/inventory/get-inventory-by-product/"+productId, InventoryClientResponse.class);
 
         if (ObjectUtils.isEmpty(inventoryClientResponse))
-            throw new BusinessLogicException("INVENTORY_NOT_FOUND");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1004);
 
         if (inventoryClientResponse.getQuantity() < quantity)
-            throw new BusinessLogicException("OUT_OF_STOCK");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1006);
 
         AccountClientResponse accountClientResponse = restTemplate.getForObject("http://localhost:9191/api/account/external/get-account/"+customerId, AccountClientResponse.class);
 
         if (ObjectUtils.isEmpty(accountClientResponse))
-            throw new BusinessLogicException("ACCOUNT_NOT_FOUND");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1004);
 
         WalletClientResponse walletClientResponse = restTemplate.getForObject("http://localhost:9191/api/account/external/get-wallet/" + accountClientResponse.getAccountId(), WalletClientResponse.class);
 
         if (ObjectUtils.isEmpty(walletClientResponse))
-            throw new BusinessLogicException("WALLET_NOT_FOUND");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1004);
 
         if (walletClientResponse.getBalance() < (productClientResponse.getProductPrice() * quantity))
-            throw new BusinessLogicException("BALANCE_NOT_ENOUGH");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1005);
 
         Order order = new Order();
         order.setCustomerId(customerId);

@@ -6,6 +6,7 @@ import managment.accountservice.controller.request.AccountUpdateRequest;
 import managment.accountservice.controller.response.AccountDeleteResponse;
 import managment.accountservice.controller.response.AccountResponse;
 import managment.accountservice.controller.response.AccountUpdateResponse;
+import managment.accountservice.exception.BusinessLogicConstants;
 import managment.accountservice.exception.BusinessLogicException;
 import managment.accountservice.model.Account;
 import managment.accountservice.model.dto.CustomerDTO;
@@ -30,21 +31,21 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void create(AccountRequest accountRequest) {
         if (ObjectUtils.isEmpty(accountRequest)) {
-            throw new BusinessLogicException("ACCOUNT_ID_NOT_FOUND");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1001);
         }
 
         if (ObjectUtils.isEmpty(accountRequest.getCustomerId())){
-            throw new BusinessLogicException("CUSTOMER_ID_NOT_FOUND");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1002);
         }
 
         CustomerDTO customerDTO = getCustomerDTO(accountRequest.getCustomerId());
 
         if (ObjectUtils.isEmpty(customerDTO)) {
-            throw new BusinessLogicException("CUSTOMER_NOT_FOUND");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1005);
         }
 
         if (accountRepository.findByCustomerId(accountRequest.getCustomerId()).isPresent()) {
-            throw new BusinessLogicException("ACCOUNT_ALREADY_EXISTS");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1007);
         }
 
         Account account = new Account();
@@ -87,7 +88,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountUpdateResponse update(Long id, AccountUpdateRequest accountUpdateRequest) {
         if (ObjectUtils.isEmpty(accountUpdateRequest)) {
-            throw new BusinessLogicException("ACCOUNT_ID_NOT_FOUND");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1003);
         }
         Account account = accountRepository.findById(id).orElseThrow(() -> new BusinessLogicException("ACCOUNT_NOT_FOUND"));
         account.setAccountName(accountUpdateRequest.getAccountName());

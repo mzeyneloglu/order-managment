@@ -8,6 +8,7 @@ import managment.accountservice.controller.response.AccountResponse;
 import managment.accountservice.controller.response.WalletDeleteResponse;
 import managment.accountservice.controller.response.WalletResponse;
 import managment.accountservice.controller.response.WalletUpdateResponse;
+import managment.accountservice.exception.BusinessLogicConstants;
 import managment.accountservice.exception.BusinessLogicException;
 import managment.accountservice.model.Account;
 import managment.accountservice.model.Wallet;
@@ -31,28 +32,28 @@ public class WalletServiceImpl implements WalletService {
     @Override
     public void create(WalletRequest walletRequest) {
         if (ObjectUtils.isEmpty(walletRequest))
-            throw new BusinessLogicException("WALLET_REQUEST_NULL");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1003);
 
         if (walletRepository.findByAccountId(walletRequest.getAccountId()).isPresent())
-            throw new BusinessLogicException("WALLET_ALREADY_EXISTS");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1007);
 
         if (accountRepository.findById(walletRequest.getAccountId()).isEmpty())
-            throw new BusinessLogicException("ACCOUNT_NOT_FOUND");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1004);
 
         if (walletRequest.getBalance() < 0 || walletRequest.getBalance() > 10000)
-            throw new BusinessLogicException("WALLET_BALANCE_NEGATIVE");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1008);
 
         Wallet wallet = getWallet(walletRequest);
         walletRepository.save(wallet);
     }
     @Override
     public WalletResponse get(Long id) {
-        Wallet wallet = walletRepository.findById(id).orElseThrow(() -> new BusinessLogicException("WALLET_NOT_FOUND"));
+        Wallet wallet = walletRepository.findById(id).orElseThrow(() -> new BusinessLogicException(BusinessLogicConstants.PR1006));
         return getWalletResponse(wallet);
     }
     @Override
     public WalletUpdateResponse update(Long id, WalletUpdateRequest walletRequest) {
-        Wallet wallet = walletRepository.findById(id).orElseThrow(() -> new BusinessLogicException("WALLET_NOT_FOUND"));
+        Wallet wallet = walletRepository.findById(id).orElseThrow(() -> new BusinessLogicException(BusinessLogicConstants.PR1006));
         wallet.setBalance(walletRequest.getBalance());
         wallet.setName(walletRequest.getName());
         wallet.setName(walletRequest.getWalletType());
@@ -61,14 +62,14 @@ public class WalletServiceImpl implements WalletService {
     }
     @Override
     public WalletDeleteResponse delete(Long id) {
-        Wallet wallet = walletRepository.findById(id).orElseThrow(() -> new BusinessLogicException("WALLET_NOT_FOUND"));
+        Wallet wallet = walletRepository.findById(id).orElseThrow(() -> new BusinessLogicException(BusinessLogicConstants.PR1006));
         WalletResponse walletResponse = getWalletResponse(wallet);
 
-        Account account = accountRepository.findById(wallet.getAccountId()).orElseThrow(() -> new BusinessLogicException("ACCOUNT_NOT_FOUND"));
+        Account account = accountRepository.findById(wallet.getAccountId()).orElseThrow(() -> new BusinessLogicException(BusinessLogicConstants.PR1004));
         CustomerDTO customerDTO = restTemplate.getForObject("http://localhost:9191/api/customer/get" + account.getCustomerId(), CustomerDTO.class);
 
         if (ObjectUtils.isEmpty(customerDTO))
-            throw new BusinessLogicException("CUSTOMER_NOT_FOUND");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1005);
 
         AccountResponse accountResponse = getAccountResponse(account, customerDTO);
         WalletDeleteResponse walletDeleteResponse = new WalletDeleteResponse();

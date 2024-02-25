@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import managment.inventoryservice.controller.response.InventoryCreateResponse;
 import managment.inventoryservice.controller.response.InventoryResponse;
 import managment.inventoryservice.controller.response.ProductClientResponse;
+import managment.inventoryservice.exception.BusinessLogicConstants;
 import managment.inventoryservice.exception.BusinessLogicException;
 import managment.inventoryservice.model.Inventory;
 import managment.inventoryservice.repository.InventoryRepository;
@@ -26,7 +27,7 @@ public class InventoryServiceImpl implements InventoryService {
                 + productId, ProductClientResponse.class);
 
         if (ObjectUtils.isEmpty(productClientResponse))
-            throw new BusinessLogicException("PRODUCT_NOT_FOUND");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1004);
 
         Inventory inventory = new Inventory();
         inventory.setQuantity(quantity);
@@ -48,7 +49,7 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public InventoryResponse getInventory(Long inventoryId) {
         if (ObjectUtils.isEmpty(inventoryId)){
-            throw new BusinessLogicException("INVENTORY_ID_NOT_FOUND");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1001);
         }
         Inventory inventory = inventoryRepository.findById(inventoryId).orElseThrow();
         InventoryResponse inventoryResponse = new InventoryResponse();

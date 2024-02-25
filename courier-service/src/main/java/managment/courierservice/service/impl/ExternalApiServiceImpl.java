@@ -3,6 +3,7 @@ package managment.courierservice.service.impl;
 import jakarta.transaction.Transactional;
 import managment.courierservice.constants.CourierStatusCode;
 import managment.courierservice.controller.response.CourierClientResponse;
+import managment.courierservice.exception.BusinessLogicConstants;
 import managment.courierservice.exception.BusinessLogicException;
 import managment.courierservice.model.Courier;
 import managment.courierservice.model.OrderInformation;
@@ -30,7 +31,7 @@ public class ExternalApiServiceImpl implements ExternalApiService {
     @Override
     public CourierClientResponse setCourier(Long orderId) {
         if (ObjectUtils.isEmpty(orderId))
-            throw new BusinessLogicException("ORDER_ID_IS_EMPTY");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1003);
 
         List<Courier> courierList = courierRepository.findAll();
         List<Courier> freeCourierList = courierList.stream()
@@ -38,7 +39,7 @@ public class ExternalApiServiceImpl implements ExternalApiService {
 
         Courier tempCourier = freeCourierList
                 .stream()
-                .min(Comparator.comparing(Courier::getCrPackageNumber)).orElseThrow(() -> new BusinessLogicException("NOT_FOUND_COURIER"));
+                .min(Comparator.comparing(Courier::getCrPackageNumber)).orElseThrow(() -> new BusinessLogicException(BusinessLogicConstants.PR1004));
 
         OrderInformation orderInformation = new OrderInformation();
         orderInformation.setCourierId(tempCourier.getId());
@@ -50,7 +51,7 @@ public class ExternalApiServiceImpl implements ExternalApiService {
                 .filter(courier -> courier.getCourierStatus().equals("BUSY")).toList();
 
         if (ObjectUtils.isEmpty(freeCourierList))
-            throw new BusinessLogicException("NO_BUSY_COURIER");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1006);
 
         List<Courier> busyRandomCourierList = pickRandomCourier(busyCourierList);
         List<Courier> freeRandomCourierList = pickRandomCourier(freeCourierList);

@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import managment.courierservice.controller.request.CourierRequest;
 import managment.courierservice.controller.response.CourierResponse;
+import managment.courierservice.exception.BusinessLogicConstants;
 import managment.courierservice.exception.BusinessLogicException;
 import managment.courierservice.model.Courier;
 import managment.courierservice.repository.CourierRepository;
@@ -19,7 +20,7 @@ public class CourierServiceImpl implements CourierService {
     @Override
     public CourierResponse create(CourierRequest request) {
         if (ObjectUtils.isEmpty(request))
-            throw new BusinessLogicException("BAD_REQUEST");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1001);
 
         isCheckCourier(request);
 
@@ -50,7 +51,7 @@ public class CourierServiceImpl implements CourierService {
                 && courier.getCourierName().equals(request.getCourierName())
                 && courier.getCourierSurname().equals(request.getCourierSurname())));
         if (checkCourier)
-            throw new BusinessLogicException("COURIER_ALREADY_EXISTS");
+            throw new BusinessLogicException(BusinessLogicConstants.PR1005);
     }
 
 
