@@ -15,8 +15,6 @@ public class Notification {
     private Long id;
     @Column(name = "MESSAGE")
     private String message;
-    @Column(name = "DESCRIPTION")
-    private String description;
     @Column(name = "STATUS")
     private String status;
     @Column(name = "CREATED_AT")
@@ -27,4 +25,7 @@ public class Notification {
     private String expiryDate;
     @Column(name = "CUSTOMER_ID")
     private Long customerId;
+    @Column(name = "ORDER_STATUS_ID")
+    private Long orderStatusId;
+
 }
