@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 public class ExternalApiController {
     private final ExternalApiService externalApiService;
 
-    @PostMapping("/create-notification/{customerId}/{orderId}")
+    @PostMapping("/create-notification/{customerId}/{orderId}/{message}")
     public void createNotification(@PathVariable("customerId") Long customerId,
                                    @PathVariable("orderId") Long orderId,
                                    @PathVariable("message") String message) {

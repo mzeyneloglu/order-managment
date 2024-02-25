@@ -4,11 +4,13 @@ import lombok.AllArgsConstructor;
 import managment.notificationservice.model.Notification;
 import managment.notificationservice.repository.NotificationRepository;
 import managment.notificationservice.service.ExternalApiService;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @AllArgsConstructor
+@Service
 public class ExternalApiServiceImpl implements ExternalApiService {
     private NotificationRepository notificationRepository;
 
