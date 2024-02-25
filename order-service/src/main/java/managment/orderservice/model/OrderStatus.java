@@ -15,4 +15,7 @@ public class OrderStatus {
 
     @Column(name = "STATUS")
     private String status;
+
+    @Column(name = "ORDER_ID")
+    private Long orderId;
 }

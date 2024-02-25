@@ -25,7 +25,4 @@ public class OrderDetails {
 
     @Column(name = "DATE")
     private String date;
-
-    @Column(name = "STATUS")
-    private String status;
 }

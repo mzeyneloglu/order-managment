@@ -1,13 +1,16 @@
 package managment.orderservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import managment.orderservice.constants.OrderStatusCode;
 import managment.orderservice.controller.response.*;
 import managment.orderservice.exception.BusinessLogicConstants;
 import managment.orderservice.exception.BusinessLogicException;
 import managment.orderservice.model.Order;
 import managment.orderservice.model.OrderDetails;
+import managment.orderservice.model.OrderStatus;
 import managment.orderservice.repository.OrderDetailsRepository;
 import managment.orderservice.repository.OrderRepository;
+import managment.orderservice.repository.OrderStatusRepository;
 import managment.orderservice.service.OrderService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -21,6 +24,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final RestTemplate restTemplate;
     private final OrderDetailsRepository orderDetailsRepository;
+    private final OrderStatusRepository orderStatusRepository;
 
     @Override
     public OrderResponse createOrder(Long customerId, Long productId, int quantity) {
@@ -71,8 +75,20 @@ public class OrderServiceImpl implements OrderService {
         orderDetails.setOrderId(order.getId());
         orderDetails.setDate(order.getDateOfOrder());
         orderDetails.setQuantity(quantity);
-        orderDetails.setStatus("1");
         orderDetailsRepository.save(orderDetails);
+
+        OrderStatus orderStatus = new OrderStatus();
+        orderStatus.setId(Long.valueOf(OrderStatusCode.CREATED.getCode()));
+        orderStatus.setStatus(String.valueOf(OrderStatusCode.CREATED));
+        orderStatus.setOrderId(order.getId());
+        orderStatusRepository.save(orderStatus);
+
+        restTemplate.postForObject("http://localhost:9191/api/notification/external/create-notification/" +
+                customerClientResponse.getCustomerId() +
+                    "/" + orderStatus.getId() +
+                    "/" + orderStatus.getStatus(),
+                null, Void.class);
+
 
         restTemplate.postForObject("http://localhost:9191/api/account/external/update-balance/" + accountClientResponse.getAccountId() + "/" + (productClientResponse.getProductPrice() * quantity), null, Void.class);
 

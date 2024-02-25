@@ -1,8 +1,11 @@
 package managment.orderservice.constants;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+
 @NoArgsConstructor
+@Getter
 public enum OrderStatusCode {
     GETTING_READY("101", "Order is being prepared."),
     CREATED("200", "The order has been created."),
