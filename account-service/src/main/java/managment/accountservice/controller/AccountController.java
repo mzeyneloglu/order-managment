@@ -6,6 +6,7 @@ import managment.accountservice.controller.request.AccountUpdateRequest;
 import managment.accountservice.controller.response.AccountDeleteResponse;
 import managment.accountservice.controller.response.AccountResponse;
 import managment.accountservice.controller.response.AccountUpdateResponse;
+import managment.accountservice.model.dto.AccountDTO;
 import managment.accountservice.service.AccountService;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +20,8 @@ public class AccountController {
         this.accountService = accountService;
     }
     @PostMapping("/create")
-    public void create(@RequestBody AccountRequest accountRequest) {
-        accountService.create(accountRequest);
+    public AccountDTO create(@RequestBody AccountRequest accountRequest) {
+        return accountService.create(accountRequest);
     }
     @GetMapping("/get-account/{id}")
     public AccountResponse get(@PathVariable Long id){

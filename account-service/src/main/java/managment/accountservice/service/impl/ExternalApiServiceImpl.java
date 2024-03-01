@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import managment.accountservice.controller.response.WalletClientResponse;
 import managment.accountservice.controller.response.AccountClientResponse;
+import managment.accountservice.exception.BusinessLogicConstants;
 import managment.accountservice.exception.BusinessLogicException;
 import managment.accountservice.model.Account;
 import managment.accountservice.model.Wallet;
@@ -22,7 +23,8 @@ public class ExternalApiServiceImpl implements ExternalApiService {
 
     @Override
     public AccountClientResponse getAccount(Long customerId) {
-        Account account = accountRepository.findByCustomerId(customerId).orElseThrow(() -> new BusinessLogicException("ACCOUNT_NOT_FOUND"));
+        Account account = accountRepository.findByCustomerId(customerId).orElseThrow(()
+                -> new BusinessLogicException(BusinessLogicConstants.PR1004));
 
         AccountClientResponse accountClientResponse = new AccountClientResponse();
         accountClientResponse.setAccountName(account.getAccountName());
@@ -34,7 +36,7 @@ public class ExternalApiServiceImpl implements ExternalApiService {
     @Override
     public WalletClientResponse getWallet(Long accountId) {
         Wallet wallet = walletRepository.findByAccountId(accountId).orElseThrow(()
-                -> new BusinessLogicException("WALLET_NOT_FOUND"));
+                -> new BusinessLogicException(BusinessLogicConstants.PR1006));
 
         WalletClientResponse walletClientResponse = new WalletClientResponse();
         walletClientResponse.setWalletId(wallet.getId());
@@ -48,7 +50,7 @@ public class ExternalApiServiceImpl implements ExternalApiService {
     @Override
     public void updateBalance(Long accountId, double amount) {
         Wallet wallet = walletRepository.findByAccountId(accountId).orElseThrow(()
-                -> new BusinessLogicException("WALLET_NOT_FOUND"));
+                -> new BusinessLogicException(BusinessLogicConstants.PR1006));
         wallet.setBalance(wallet.getBalance() - amount);
         walletRepository.save(wallet);
     }

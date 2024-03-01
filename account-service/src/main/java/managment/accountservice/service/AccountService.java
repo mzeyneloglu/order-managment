@@ -6,11 +6,12 @@ import managment.accountservice.controller.response.AccountDeleteResponse;
 import managment.accountservice.controller.response.AccountResponse;
 import managment.accountservice.controller.response.AccountUpdateResponse;
 import managment.accountservice.model.Account;
+import managment.accountservice.model.dto.AccountDTO;
 
 import java.util.List;
 
 public interface AccountService {
-    void create(AccountRequest accountRequest);
+    AccountDTO create(AccountRequest accountRequest);
 
     AccountResponse get(Long id);
 

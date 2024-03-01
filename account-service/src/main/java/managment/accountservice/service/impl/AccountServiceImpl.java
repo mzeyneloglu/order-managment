@@ -9,6 +9,7 @@ import managment.accountservice.controller.response.AccountUpdateResponse;
 import managment.accountservice.exception.BusinessLogicConstants;
 import managment.accountservice.exception.BusinessLogicException;
 import managment.accountservice.model.Account;
+import managment.accountservice.model.dto.AccountDTO;
 import managment.accountservice.model.dto.CustomerDTO;
 import managment.accountservice.repository.AccountRepository;
 import managment.accountservice.service.AccountService;
@@ -29,7 +30,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void create(AccountRequest accountRequest) {
+    public AccountDTO create(AccountRequest accountRequest) {
         if (ObjectUtils.isEmpty(accountRequest)) {
             throw new BusinessLogicException(BusinessLogicConstants.PR1001);
         }
@@ -53,8 +54,9 @@ public class AccountServiceImpl implements AccountService {
         account.setAccountType(accountRequest.getAccountType());
         account.setDate(accountRequest.getDate());
         account.setCustomerId(accountRequest.getCustomerId());
-
         accountRepository.save(account);
+
+        return account.toDTO();
     }
 
     @Override
@@ -80,9 +82,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public List<AccountResponse> getAccounts() {
         List<Account> accounts = accountRepository.findAll();
-        return accounts.stream().map(account -> {
-            return getAccountResponse(account);
-        }).toList();
+        return accounts.stream().map(this::getAccountResponse).toList();
     }
 
     @Override

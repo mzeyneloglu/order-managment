@@ -6,6 +6,7 @@ import managment.accountservice.controller.request.WalletUpdateRequest;
 import managment.accountservice.controller.response.WalletDeleteResponse;
 import managment.accountservice.controller.response.WalletResponse;
 import managment.accountservice.controller.response.WalletUpdateResponse;
+import managment.accountservice.model.dto.WalletDTO;
 import managment.accountservice.service.WalletService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -18,8 +19,8 @@ public class WalletController {
         this.walletService = walletService;
     }
     @PostMapping("/create-wallet")
-    public void createWallet(@RequestBody WalletRequest walletRequest) {
-        walletService.create(walletRequest);
+    public WalletDTO createWallet(@RequestBody WalletRequest walletRequest) {
+        return walletService.create(walletRequest);
     }
     @GetMapping("/get-wallet/{id}")
     public WalletResponse get(@PathVariable Long id){

@@ -3,6 +3,7 @@ package managment.accountservice.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import managment.accountservice.model.dto.WalletDTO;
 
 @Getter
 @Setter
@@ -26,4 +27,25 @@ public class Wallet {
     @Column(name = "EXPIRY_DATE")
     private String expiryDate;
 
+    public WalletDTO toDTO() {
+        WalletDTO walletDTO = new WalletDTO();
+        walletDTO.setName(this.name);
+        walletDTO.setBalance(this.balance);
+        walletDTO.setAccountId(this.accountId);
+        walletDTO.setType(this.type);
+        walletDTO.setCreationDate(this.creationDate);
+        walletDTO.setExpiryDate(this.expiryDate);
+        return walletDTO;
+    }
+
+    public Wallet fromDTO(WalletDTO walletDTO) {
+        Wallet wallet = new Wallet();
+        wallet.setName(walletDTO.getName());
+        wallet.setBalance(walletDTO.getBalance());
+        wallet.setAccountId(walletDTO.getAccountId());
+        wallet.setType(walletDTO.getType());
+        wallet.setCreationDate(walletDTO.getCreationDate());
+        wallet.setExpiryDate(walletDTO.getExpiryDate());
+        return wallet;
+    }
 }

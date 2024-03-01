@@ -5,11 +5,12 @@ import managment.accountservice.controller.request.WalletUpdateRequest;
 import managment.accountservice.controller.response.WalletDeleteResponse;
 import managment.accountservice.controller.response.WalletResponse;
 import managment.accountservice.controller.response.WalletUpdateResponse;
+import managment.accountservice.model.dto.WalletDTO;
 
 import java.util.List;
 
 public interface WalletService {
-    void create(WalletRequest walletRequest);
+    WalletDTO create(WalletRequest walletRequest);
 
     WalletResponse get(Long id);
 

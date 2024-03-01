@@ -13,6 +13,7 @@ import managment.accountservice.exception.BusinessLogicException;
 import managment.accountservice.model.Account;
 import managment.accountservice.model.Wallet;
 import managment.accountservice.model.dto.CustomerDTO;
+import managment.accountservice.model.dto.WalletDTO;
 import managment.accountservice.repository.AccountRepository;
 import managment.accountservice.repository.WalletRepository;
 import managment.accountservice.service.WalletService;
@@ -30,7 +31,7 @@ public class WalletServiceImpl implements WalletService {
     private final AccountRepository accountRepository;
     private final RestTemplate restTemplate;
     @Override
-    public void create(WalletRequest walletRequest) {
+    public WalletDTO create(WalletRequest walletRequest) {
         if (ObjectUtils.isEmpty(walletRequest))
             throw new BusinessLogicException(BusinessLogicConstants.PR1003);
 
@@ -45,6 +46,8 @@ public class WalletServiceImpl implements WalletService {
 
         Wallet wallet = getWallet(walletRequest);
         walletRepository.save(wallet);
+
+        return wallet.toDTO();
     }
     @Override
     public WalletResponse get(Long id) {

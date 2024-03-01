@@ -3,6 +3,7 @@ package managment.accountservice.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import managment.accountservice.model.dto.AccountDTO;
 
 @Getter
 @Setter
@@ -21,4 +22,20 @@ public class Account {
     private String accountType;
     @Column(name = "DATE")
     private String date;
+
+    public AccountDTO toDTO(){
+        AccountDTO accountDTO = new AccountDTO();
+        accountDTO.setAccountName(accountName);
+        accountDTO.setAccountType(accountType);
+        accountDTO.setDate(date);
+        return accountDTO;
+    }
+    public Account fromDTO(AccountDTO accountDTO){
+        Account account = new Account();
+        account.setAccountName(accountDTO.getAccountName());
+        account.setAccountType(accountDTO.getAccountType());
+        account.setDate(accountDTO.getDate());
+        return account;
+    }
+
 }
