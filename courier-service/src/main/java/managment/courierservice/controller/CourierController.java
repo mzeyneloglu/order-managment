@@ -5,10 +5,7 @@ import managment.courierservice.constants.ApiEndpoints;
 import managment.courierservice.controller.request.CourierRequest;
 import managment.courierservice.controller.response.CourierResponse;
 import managment.courierservice.service.CourierService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(ApiEndpoints.END_POINT)
@@ -18,6 +15,12 @@ public class CourierController {
     @PostMapping("/create")
     public CourierResponse create(@RequestBody CourierRequest request) {
         return courierService.create(request);
+    }
+
+    @PostMapping("/set-status/{orderId}/{statusCode}")
+    public String setStatus(@PathVariable(value = "orderId") Long orderId,
+                                                @PathVariable(value = "statusCode") Long statusCode) {
+        return courierService.setStatus(orderId, statusCode);
     }
 
 }

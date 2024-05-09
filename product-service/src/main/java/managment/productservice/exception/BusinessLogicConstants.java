@@ -5,5 +5,5 @@ public final class BusinessLogicConstants {
     public static final String PR1002 = "CANNOT_BE_NULL";
     public static final String PR1003 = "BAD_REQUEST";
     public static final String PR1004 = "NOT_FOUND";
-
+    public static final String PR1005 = "ALREADY_EXISTS";
 }

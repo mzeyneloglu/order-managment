@@ -22,5 +22,5 @@ public interface ProductService {
 
     void delete(Long productId);
 
-    void createAll(List<ProductCreateRequest> productCreateRequest);
+    List<ProductCreateResponse> createAll(List<ProductCreateRequest> productCreateRequest);
 }

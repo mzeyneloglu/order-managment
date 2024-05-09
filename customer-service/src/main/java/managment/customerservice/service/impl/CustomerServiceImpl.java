@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import managment.customerservice.controller.request.CreateCustomerRequest;
 import managment.customerservice.controller.request.UpdateCustomerRequest;
 import managment.customerservice.controller.response.ProductClientProductResponse;
+import static org.apache.commons.lang.StringUtils.*;
 import managment.customerservice.exception.BusinessLogicConstants;
 import managment.customerservice.exception.BusinessLogicException;
 import managment.customerservice.model.Customer;
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,9 +29,14 @@ public class CustomerServiceImpl implements CustomerService {
     private final Logger logger = LoggerFactory.getLogger(CustomerServiceImpl.class);
     @Override
     public void create(CreateCustomerRequest createCustomerRequest) {
-        if (createCustomerRequest == null) {
+        if (isEmpty(createCustomerRequest.getCustomerAddress())
+                || isEmpty(createCustomerRequest.getCustomerEmail())
+                || isEmpty(createCustomerRequest.getCustomerName())
+                || isEmpty(createCustomerRequest.getCustomerPhoneNumber())
+                || isEmpty(createCustomerRequest.getCustomerSurname())) {
             throw new BusinessLogicException(BusinessLogicConstants.PR1001);
         }
+
         Customer customer = new Customer();
         customer.setName(createCustomerRequest.getCustomerName());
         customer.setSurname(createCustomerRequest.getCustomerSurname());

@@ -132,6 +132,22 @@ services:
     links:
       - discovery-server
 
+  notification-server:
+    container_name: notification-service-container
+    image: notification-service:latest
+    ports:
+      - "8087:8087"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka/
+    networks:
+      - microservices-network
+      - organization-mysql
+    depends_on:
+      - discovery-server
+    links:
+      - discovery-server
+
 networks:
   microservices-network:
     driver: bridge

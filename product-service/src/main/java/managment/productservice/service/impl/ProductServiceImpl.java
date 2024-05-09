@@ -30,6 +30,9 @@ public class ProductServiceImpl implements ProductService {
         if(Objects.isNull(productCreateRequest))
             throw new BusinessLogicException(BusinessLogicConstants.PR1001);
 
+        if(productRepository.existsProductByName(productCreateRequest.getProductName()))
+            throw new BusinessLogicException(BusinessLogicConstants.PR1005);
+
         Product product = getProduct(productCreateRequest);
         ProductCreateResponse productCreateResponse = new ProductCreateResponse();
         productCreateResponse.toDto(product);
@@ -77,6 +80,7 @@ public class ProductServiceImpl implements ProductService {
         product.setCategory(productCreateRequest.getProductCategory());
         product.setPrice(productCreateRequest.getProductPrice());
         product.setDiscount(productCreateRequest.getProductDiscount());
+        product.setTicketNo(productCreateRequest.getProductTicketNo());
 
         UpdateProductDTO updateProductDTO = new UpdateProductDTO();
         updateProductDTO.toDto(product);
@@ -114,11 +118,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void createAll(List<ProductCreateRequest> productCreateRequest) {
+    public List<ProductCreateResponse> createAll(List<ProductCreateRequest> productCreateRequest) {
         if (Objects.isNull(productCreateRequest))
             throw new BusinessLogicException(BusinessLogicConstants.PR1001);
 
-        productRepository.saveAll(productCreateRequest.stream().map(this::getProduct).collect(Collectors.toList()));
+        return productCreateRequest
+                .stream()
+                .map(this::create)
+                .toList();
     }
 
     private Product getProduct(ProductCreateRequest productCreateRequest1) {
@@ -128,6 +135,7 @@ public class ProductServiceImpl implements ProductService {
         product.setCategory(productCreateRequest1.getProductCategory());
         product.setPrice(productCreateRequest1.getProductPrice());
         product.setDiscount(productCreateRequest1.getProductDiscount());
+        product.setTicketNo(productCreateRequest1.getProductTicketNo());
         return product;
     }
 }

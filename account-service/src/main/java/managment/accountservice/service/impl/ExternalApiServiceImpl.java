@@ -2,8 +2,8 @@ package managment.accountservice.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import managment.accountservice.controller.response.WalletClientResponse;
-import managment.accountservice.controller.response.AccountClientResponse;
+import managment.accountservice.controller.response.external.WalletClientResponse;
+import managment.accountservice.controller.response.external.AccountClientResponse;
 import managment.accountservice.exception.BusinessLogicConstants;
 import managment.accountservice.exception.BusinessLogicException;
 import managment.accountservice.model.Account;

@@ -1,9 +1,7 @@
 package managment.accountservice.service;
 
-import managment.accountservice.controller.response.AccountClientResponse;
-import managment.accountservice.controller.response.WalletClientResponse;
-
-import java.util.List;
+import managment.accountservice.controller.response.external.AccountClientResponse;
+import managment.accountservice.controller.response.external.WalletClientResponse;
 
 public interface ExternalApiService {
     AccountClientResponse getAccount(Long customerId);

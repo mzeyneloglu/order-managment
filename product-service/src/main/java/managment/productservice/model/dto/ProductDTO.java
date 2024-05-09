@@ -14,12 +14,15 @@ public class ProductDTO {
     private double productPrice;
     private String productDescription;
     private String productCategory;
-    public void toDto(Product product) {
+    private String ticketNo;
+    public ProductDTO toDto(Product product) {
         this.productId = product.getId();
         this.productName = product.getName();
         this.productPrice = product.getPrice();
         this.productDescription = product.getDescription();
         this.productCategory = product.getCategory();
+        this.ticketNo = product.getTicketNo();
+        return this;
     }
 
 }

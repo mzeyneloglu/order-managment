@@ -16,6 +16,7 @@ public class UpdateProductDTO {
     private String productCategory;
     private double productPrice;
     private double productDiscount;
+    private String productTicketNo;
     private String message;
 
     public void toDto(Product product) {
@@ -24,6 +25,7 @@ public class UpdateProductDTO {
         this.productCategory = product.getCategory();
         this.productPrice = product.getPrice();
         this.productDiscount = product.getDiscount();
+        this.productTicketNo = productTicketNo;
     }
 
 }

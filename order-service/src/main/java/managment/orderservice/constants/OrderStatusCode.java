@@ -2,6 +2,7 @@ package managment.orderservice.constants;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.aspectj.weaver.ast.Or;
 
 
 @NoArgsConstructor
@@ -23,6 +24,15 @@ public enum OrderStatusCode {
         this.description = description;
         this.code = code;
 
+    }
+
+    public static String getByCode(String code){
+        for (OrderStatusCode orderStatusCode : OrderStatusCode.values()) {
+            if (orderStatusCode.getCode().equals(code)) {
+                return orderStatusCode.toString();
+            }
+        }
+        return null;
     }
 }
 

@@ -1,7 +1,5 @@
 package managment.productservice.controller.response;
 
-
-
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +17,7 @@ public class ProductCreateResponse {
     private String productCategory;
     private double productPrice;
     private double productDiscount;
+    private String productTicketNo;
     private String message;
 
     public void toDto(Product product){
@@ -27,6 +26,7 @@ public class ProductCreateResponse {
         this.setProductCategory(product.getCategory());
         this.setProductPrice(product.getPrice());
         this.setProductDiscount(product.getDiscount());
+        this.setProductTicketNo(product.getTicketNo());
     }
 
 }

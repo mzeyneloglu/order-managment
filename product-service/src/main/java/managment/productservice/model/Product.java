@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.ws.rs.DefaultValue;
 import lombok.Getter;
 import lombok.Setter;
+import managment.productservice.model.dto.ProductDTO;
 
 @Entity
 @Getter
@@ -14,6 +15,8 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
+    @Column(name = "TICKET_NO")
+    private String ticketNo;
     @Column(name = "NAME")
     private String name;
     @Column(name = "DESCRIPTION")

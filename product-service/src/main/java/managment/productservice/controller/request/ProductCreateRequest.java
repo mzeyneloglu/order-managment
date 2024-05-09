@@ -14,4 +14,5 @@ public class ProductCreateRequest {
     private String productCategory;
     private double productPrice;
     private double productDiscount;
+    private String productTicketNo;
 }

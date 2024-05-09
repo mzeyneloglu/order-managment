@@ -2,8 +2,8 @@ package managment.accountservice.controller;
 
 import lombok.RequiredArgsConstructor;
 import managment.accountservice.constants.ApiEndpoints;
-import managment.accountservice.controller.response.AccountClientResponse;
-import managment.accountservice.controller.response.WalletClientResponse;
+import managment.accountservice.controller.response.external.AccountClientResponse;
+import managment.accountservice.controller.response.external.WalletClientResponse;
 import managment.accountservice.service.ExternalApiService;
 import org.springframework.web.bind.annotation.*;
 

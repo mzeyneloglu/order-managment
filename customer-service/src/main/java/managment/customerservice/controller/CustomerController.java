@@ -15,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping(ApiEndpoints.END_POINT)
 @RequiredArgsConstructor
+@CrossOrigin
 public class CustomerController {
     private final CustomerService customerService;
 

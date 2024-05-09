@@ -10,8 +10,12 @@ import lombok.Setter;
 @Entity
 public class OrderStatus {
     @Id
-    @Column(name = "ORDER_STATUS_ID")
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "ORDER_STATUS_ID")
+    private Long orderStatusId;
 
     @Column(name = "STATUS")
     private String status;

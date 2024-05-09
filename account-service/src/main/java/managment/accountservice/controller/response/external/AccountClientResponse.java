@@ -1,4 +1,4 @@
-package managment.accountservice.controller.response;
+package managment.accountservice.controller.response.external;
 
 import lombok.Data;
 import lombok.Getter;

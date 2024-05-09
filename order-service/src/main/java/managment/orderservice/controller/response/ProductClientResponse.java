@@ -16,4 +16,5 @@ public class ProductClientResponse {
     private double productPrice;
     private String productDescription;
     private String productCategory;
+    private String productTicketNo;
 }

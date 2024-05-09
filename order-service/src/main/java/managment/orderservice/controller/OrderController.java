@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import managment.orderservice.constants.ApiEndpoints;
 import managment.orderservice.controller.response.OrderResponse;
 import managment.orderservice.service.OrderService;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,4 +19,21 @@ public class OrderController {
                                      @RequestHeader int quantity){
         return orderService.createOrder(customerId, productId, quantity);
     }
+    @GetMapping("/get-order/{orderId}")
+    public OrderResponse getOrder(@PathVariable Long orderId){
+        return orderService.getOrder(orderId);
+    }
+
+    @PostMapping("/update-orderStatus/{orderId}/{orderStatusId}")
+    public void updateOrderStatus(@PathVariable Long orderId,
+                                  @PathVariable Long orderStatusId){
+        orderService.updateOrderStatus(orderId, orderStatusId);
+    }
+
+    @PostMapping("/create-order-with-voice")
+    public OrderResponse createOrderWithVoice(){
+        return orderService.createOrderWithVoice();
+    }
+
+
 }

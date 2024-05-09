@@ -23,8 +23,8 @@ public class ProductController {
         return productService.create(productCreateRequest);
     }
     @PostMapping("create-many-products")
-    public void createMany(@RequestBody List<ProductCreateRequest> productCreateRequest){
-        productService.createAll(productCreateRequest);
+    public List<ProductCreateResponse> createMany(@RequestBody List<ProductCreateRequest> productCreateRequest){
+        return productService.createAll(productCreateRequest);
     }
 
     @GetMapping("get-product/{productId}")

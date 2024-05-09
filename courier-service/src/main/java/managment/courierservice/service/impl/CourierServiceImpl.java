@@ -11,12 +11,14 @@ import managment.courierservice.repository.CourierRepository;
 import managment.courierservice.service.CourierService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class CourierServiceImpl implements CourierService {
     private final CourierRepository courierRepository;
+    private final RestTemplate restTemplate;
     @Override
     public CourierResponse create(CourierRequest request) {
         if (ObjectUtils.isEmpty(request))
@@ -34,6 +36,21 @@ public class CourierServiceImpl implements CourierService {
         courierRepository.save(courier);
 
         return getCourierResponse(courier);
+
+    }
+
+    @Override
+    public String setStatus(Long orderId, Long statusCode) {
+
+        if (ObjectUtils.isEmpty(orderId) || ObjectUtils.isEmpty(statusCode))
+            throw new BusinessLogicException(BusinessLogicConstants.PR1001);
+
+        restTemplate.postForObject("http://localhost:9191/api/order/update-orderStatus/"
+                + orderId +
+                "/"
+                + statusCode, null, Void.class);
+
+        return "Updated order status";
 
     }
 
