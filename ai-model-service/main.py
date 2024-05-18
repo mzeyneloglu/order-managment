@@ -75,7 +75,7 @@ async def stop_recording(request: Request):
     if recognizer_state.text:
         ticket_no = recognizer_state.text
 
-        java_api_url = "http://localhost:8585/api/ai/with-voice-order"
+        java_api_url = "http://localhost:9191/ai-service/api/ai/with-voice-order"
         request_body = {
             "speechText": ticket_no,
             "quantity": request.quantity,

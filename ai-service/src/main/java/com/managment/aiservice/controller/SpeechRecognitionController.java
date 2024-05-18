@@ -5,7 +5,6 @@ import com.managment.aiservice.controller.request.SpeechTextRequest;
 import com.managment.aiservice.controller.response.OrderResponse;
 import com.managment.aiservice.service.SpeechRecognitionService;
 import lombok.RequiredArgsConstructor;
-import org.json.JSONObject;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 

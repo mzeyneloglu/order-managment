@@ -96,7 +96,7 @@ public class OrderServiceImpl implements OrderService {
 
         restTemplate.postForObject("http://localhost:9191/account-service/api/account/external/update-balance/" + accountClientResponse.getAccountId() + "/" + (productClientResponse.getProductPrice() * quantity), null, Void.class);
 
-        CourierClientResponse courierClientResponse = restTemplate.postForObject("http://localhost:9191/courier-service/api/courier/set-courier/" + order.getId(),
+        CourierClientResponse courierClientResponse = restTemplate.postForObject("http://localhost:9191/courier-service/api/external/courier/set-courier/" + order.getId(),
                 null,
                 CourierClientResponse.class);
 
@@ -226,7 +226,7 @@ public class OrderServiceImpl implements OrderService {
                         + "/" + (productClientResponse.getProductPrice() * quantity), null, Void.class);
 
         CourierClientResponse courierClientResponse = restTemplate
-                .postForObject("http://localhost:9191/courier-service/api/courier/set-courier/" + order.getId(),
+                .postForObject("http://localhost:9191/courier-service/api/external/courier/set-courier/" + order.getId(),
                 null,
                 CourierClientResponse.class);
 
