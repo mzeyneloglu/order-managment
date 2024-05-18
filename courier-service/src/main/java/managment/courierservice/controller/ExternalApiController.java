@@ -8,7 +8,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(ApiEndpoints.END_POINT)
+@RequestMapping(ApiEndpoints.EXTERNAL_API)
 public class ExternalApiController {
     private final ExternalApiService externalApiService;
 

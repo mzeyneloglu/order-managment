@@ -19,6 +19,7 @@ public class ProductCreateResponse {
     private double productDiscount;
     private String productTicketNo;
     private String message;
+    private String imageUrl;
 
     public void toDto(Product product){
         this.setProductName(product.getName());
@@ -27,6 +28,7 @@ public class ProductCreateResponse {
         this.setProductPrice(product.getPrice());
         this.setProductDiscount(product.getDiscount());
         this.setProductTicketNo(product.getTicketNo());
+        this.setImageUrl(product.getImageUrl());
     }
 
 }

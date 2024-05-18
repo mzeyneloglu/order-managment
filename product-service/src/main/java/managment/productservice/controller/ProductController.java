@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = ApiEndpoints.END_POINT)
+@RequestMapping(value =  ApiEndpoints.END_POINT)
 @RequiredArgsConstructor
+@CrossOrigin
 public class ProductController {
     private final ProductService productService;
 
@@ -26,7 +27,6 @@ public class ProductController {
     public List<ProductCreateResponse> createMany(@RequestBody List<ProductCreateRequest> productCreateRequest){
         return productService.createAll(productCreateRequest);
     }
-
     @GetMapping("get-product/{productId}")
     // @ApiOperation(value = "get product")
     public ProductDTO get(@PathVariable Long productId){

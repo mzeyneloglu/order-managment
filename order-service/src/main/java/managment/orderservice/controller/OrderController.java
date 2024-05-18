@@ -1,7 +1,9 @@
 package managment.orderservice.controller;
 
+import jakarta.ws.rs.Path;
 import lombok.RequiredArgsConstructor;
 import managment.orderservice.constants.ApiEndpoints;
+import managment.orderservice.controller.request.SpeechToTextRequest;
 import managment.orderservice.controller.response.OrderResponse;
 import managment.orderservice.service.OrderService;
 import org.springframework.ui.Model;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(ApiEndpoints.END_POINT)
 @RequiredArgsConstructor
+@CrossOrigin
 public class OrderController {
     private final OrderService orderService;
 
@@ -31,9 +34,8 @@ public class OrderController {
     }
 
     @PostMapping("/create-order-with-voice")
-    public OrderResponse createOrderWithVoice(){
-        return orderService.createOrderWithVoice();
+    public OrderResponse createOrderWithVoice(@RequestBody SpeechToTextRequest request){
+        return orderService.createOrderWithVoice(request);
     }
-
 
 }

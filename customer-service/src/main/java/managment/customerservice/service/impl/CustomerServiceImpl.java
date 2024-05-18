@@ -28,7 +28,7 @@ public class CustomerServiceImpl implements CustomerService {
     private final RestTemplate restTemplate;
     private final Logger logger = LoggerFactory.getLogger(CustomerServiceImpl.class);
     @Override
-    public void create(CreateCustomerRequest createCustomerRequest) {
+    public Long create(CreateCustomerRequest createCustomerRequest) {
         if (isEmpty(createCustomerRequest.getCustomerAddress())
                 || isEmpty(createCustomerRequest.getCustomerEmail())
                 || isEmpty(createCustomerRequest.getCustomerName())
@@ -45,6 +45,7 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setAddress(createCustomerRequest.getCustomerAddress());
 
         customerRepository.save(customer);
+        return customer.getId();
 
     }
     @Override

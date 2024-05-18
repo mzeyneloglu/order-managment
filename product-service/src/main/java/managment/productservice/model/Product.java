@@ -27,4 +27,6 @@ public class Product {
     private double price;
     @Column(name = "DISCOUNT")
     private double discount = 0.0;
+    @Column(name = "IMAGE_URL", length = 1024)
+    private String imageUrl;
 }

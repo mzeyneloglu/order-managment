@@ -15,4 +15,5 @@ public class ProductCreateRequest {
     private double productPrice;
     private double productDiscount;
     private String productTicketNo;
+    private String imageUrl;
 }

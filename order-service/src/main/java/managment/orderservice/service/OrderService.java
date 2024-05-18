@@ -1,5 +1,6 @@
 package managment.orderservice.service;
 
+import managment.orderservice.controller.request.SpeechToTextRequest;
 import managment.orderservice.controller.response.OrderResponse;
 
 public interface OrderService {
@@ -9,5 +10,5 @@ public interface OrderService {
 
     void updateOrderStatus(Long orderId,Long orderStatusId);
 
-    OrderResponse createOrderWithVoice();
+    OrderResponse createOrderWithVoice(SpeechToTextRequest request);
 }

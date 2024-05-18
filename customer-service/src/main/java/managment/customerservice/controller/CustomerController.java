@@ -21,8 +21,8 @@ public class CustomerController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.OK)
-    public void create(@RequestBody CreateCustomerRequest createCustomerRequest){
-        customerService.create(createCustomerRequest);
+    public Long create(@RequestBody CreateCustomerRequest createCustomerRequest){
+        return customerService.create(createCustomerRequest);
     }
 
     @PostMapping("/create-many-customers")

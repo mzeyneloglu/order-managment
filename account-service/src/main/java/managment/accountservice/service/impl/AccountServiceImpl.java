@@ -76,7 +76,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     private CustomerDTO getCustomerDTO(Long customerId) {
-        return restTemplate.getForObject("http://localhost:9191/api/customer/get" + customerId, CustomerDTO.class);
+        return restTemplate.getForObject("http://localhost:9191/customer-service/api/customer/get" + customerId, CustomerDTO.class);
     }
 
     @Override

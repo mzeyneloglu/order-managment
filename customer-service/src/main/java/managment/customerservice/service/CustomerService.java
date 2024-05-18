@@ -9,7 +9,7 @@ import java.util.List;
 
 
 public interface CustomerService {
-    void create(CreateCustomerRequest createCustomerRequest);
+    Long create(CreateCustomerRequest createCustomerRequest);
     CustomerDTO get(Long customerId);
 
     List<CustomerDTO> getAll();

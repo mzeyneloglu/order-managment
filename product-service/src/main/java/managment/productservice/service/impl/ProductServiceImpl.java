@@ -13,9 +13,6 @@ import managment.productservice.repository.ProductRepository;
 import managment.productservice.service.ProductService;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
-
-
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -81,6 +78,7 @@ public class ProductServiceImpl implements ProductService {
         product.setPrice(productCreateRequest.getProductPrice());
         product.setDiscount(productCreateRequest.getProductDiscount());
         product.setTicketNo(productCreateRequest.getProductTicketNo());
+        product.setImageUrl(productCreateRequest.getImageUrl());
 
         UpdateProductDTO updateProductDTO = new UpdateProductDTO();
         updateProductDTO.toDto(product);
@@ -136,6 +134,7 @@ public class ProductServiceImpl implements ProductService {
         product.setPrice(productCreateRequest1.getProductPrice());
         product.setDiscount(productCreateRequest1.getProductDiscount());
         product.setTicketNo(productCreateRequest1.getProductTicketNo());
+        product.setImageUrl(productCreateRequest1.getImageUrl());
         return product;
     }
 }

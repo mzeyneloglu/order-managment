@@ -69,7 +69,7 @@ public class WalletServiceImpl implements WalletService {
         WalletResponse walletResponse = getWalletResponse(wallet);
 
         Account account = accountRepository.findById(wallet.getAccountId()).orElseThrow(() -> new BusinessLogicException(BusinessLogicConstants.PR1004));
-        CustomerDTO customerDTO = restTemplate.getForObject("http://localhost:9191/api/customer/get" + account.getCustomerId(), CustomerDTO.class);
+        CustomerDTO customerDTO = restTemplate.getForObject("http://localhost:9191/customer-service/api/customer/get" + account.getCustomerId(), CustomerDTO.class);
 
         if (ObjectUtils.isEmpty(customerDTO))
             throw new BusinessLogicException(BusinessLogicConstants.PR1005);

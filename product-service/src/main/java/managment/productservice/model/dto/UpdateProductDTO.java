@@ -18,6 +18,7 @@ public class UpdateProductDTO {
     private double productDiscount;
     private String productTicketNo;
     private String message;
+    private String imageUrl;
 
     public void toDto(Product product) {
         this.productName = product.getName();
@@ -25,7 +26,8 @@ public class UpdateProductDTO {
         this.productCategory = product.getCategory();
         this.productPrice = product.getPrice();
         this.productDiscount = product.getDiscount();
-        this.productTicketNo = productTicketNo;
+        this.productTicketNo = product.getTicketNo();
+        this.imageUrl = product.getImageUrl();
     }
 
 }
