@@ -1,0 +1,57 @@
+server:
+  port: 9191
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.gateway: INFO
+    org.springframework.cloud.gateway.route.definition.locator: DEBUG
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: product-service
+          uri: lb://product-service
+          predicates:
+            - Path=/product-service/api/product/**, /product-service/api/external/product/**
+        - id: customer-service
+          uri: lb://customer-service
+          predicates:
+            - Path=/customer-service/api/customer/**, /customer-service/api/external/customer/**
+        - id: account-service
+          uri: lb://account-service
+          predicates:
+            - Path=/account-service/api/account/**, /account-service/api/account/external/**
+        - id: order-service
+          uri: lb://order-service
+          predicates:
+            - Path=/order-service/api/order/**, /order-service/api/external/order/**
+        - id: notification-service
+          uri: lb://notification-service
+          predicates:
+            - Path=/notification-service/api/notification/**, /notification-service/api/notification/external/**
+        - id: courier-service
+          uri: lb://courier-service
+          predicates:
+            - Path=/courier-service/api/courier/**, /courier-service/api/external/courier/**
+        - id: ai-service
+          uri: lb://ai-service
+          predicates:
+            - Path=/ai-service/api/ai/**, /ai-service/api/external/ai/**
+        - id: inventory-service
+          uri: lb://inventory-service
+          predicates:
+            - Path=/inventory-service/api/inventory/**, /inventory-service/api/external/inventory/**
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth-service/api/auth/**, /auth-service/api/external/auth/**
+  application:
+    name: API-GATEWAY
