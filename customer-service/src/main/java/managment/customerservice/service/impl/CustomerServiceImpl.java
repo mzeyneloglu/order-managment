@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,7 +32,8 @@ public class CustomerServiceImpl implements CustomerService {
                 || isEmpty(createCustomerRequest.getCustomerEmail())
                 || isEmpty(createCustomerRequest.getCustomerName())
                 || isEmpty(createCustomerRequest.getCustomerPhoneNumber())
-                || isEmpty(createCustomerRequest.getCustomerSurname())) {
+                || isEmpty(createCustomerRequest.getCustomerSurname())
+                || isEmpty(createCustomerRequest.getCustomerUsername())) {
             throw new BusinessLogicException(BusinessLogicConstants.PR1001);
         }
 
@@ -43,6 +43,7 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setEmail(createCustomerRequest.getCustomerEmail());
         customer.setPhone(createCustomerRequest.getCustomerPhoneNumber());
         customer.setAddress(createCustomerRequest.getCustomerAddress());
+        customer.setUsername(createCustomerRequest.getCustomerUsername());
 
         customerRepository.save(customer);
         return customer.getId();
@@ -60,6 +61,7 @@ public class CustomerServiceImpl implements CustomerService {
             customer.setEmail(request.getCustomerEmail());
             customer.setPhone(request.getCustomerPhoneNumber());
             customer.setAddress(request.getCustomerAddress());
+            customer.setUsername(request.getCustomerUsername());
             return customer;
         }).collect(Collectors.toList()));
     }
@@ -69,7 +71,38 @@ public class CustomerServiceImpl implements CustomerService {
         if (productId < 0 || ObjectUtils.isEmpty(productId)) {
             throw new BusinessLogicException(BusinessLogicConstants.PR1003);
         }
-        return restTemplate.getForObject("http://localhost:9191/api/product/get-product/" + productId, ProductClientProductResponse.class);
+        return restTemplate.getForObject("http://localhost:9191/product-service/api/product/get-product/" + productId, ProductClientProductResponse.class);
+    }
+
+    @Override
+    public Long getByUsername(String username) {
+        if(isEmpty(username)) {
+            throw new BusinessLogicException(BusinessLogicConstants.PR1001);
+        }
+        return customerRepository.getCustomerIdByCustomerUsername(username);
+    }
+
+    @Override
+    public void updateExternal(UpdateCustomerRequest updateCustomerRequest) {
+        if (isEmpty(updateCustomerRequest.getCustomerDto().getCustomerName()) ||
+            isEmpty(updateCustomerRequest.getCustomerDto().getCustomerSurname()) ||
+            isEmpty(updateCustomerRequest.getCustomerDto().getCustomerEmail()) ||
+            isEmpty(updateCustomerRequest.getCustomerDto().getCustomerPhone()) ||
+            isEmpty(updateCustomerRequest.getCustomerDto().getCustomerAddress())) {
+
+            throw new BusinessLogicException(BusinessLogicConstants.PR1001);
+        }
+        Customer customer = customerRepository.findCustomerById(updateCustomerRequest.getCustomerDto().getCustomerId());
+        if (ObjectUtils.isEmpty(customer)) {
+            throw new BusinessLogicException(BusinessLogicConstants.PR1002);
+        }
+        customer.setName(updateCustomerRequest.getCustomerDto().getCustomerName());
+        customer.setSurname(updateCustomerRequest.getCustomerDto().getCustomerSurname());
+        customer.setEmail(updateCustomerRequest.getCustomerDto().getCustomerEmail());
+        customer.setPhone(updateCustomerRequest.getCustomerDto().getCustomerPhone());
+        customer.setAddress(updateCustomerRequest.getCustomerDto().getCustomerAddress());
+        customerRepository.save(customer);
+
     }
     @Override
     public CustomerDTO get(Long customerId) {
@@ -99,6 +132,7 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setEmail(updateCustomerRequest.getCustomerDto().getCustomerEmail());
         customer.setPhone(updateCustomerRequest.getCustomerDto().getCustomerPhone());
         customer.setAddress(updateCustomerRequest.getCustomerDto().getCustomerAddress());
+        customer.setUsername(updateCustomerRequest.getCustomerDto().getCustomerUsername());
 
         customerRepository.save(customer);
 

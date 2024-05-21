@@ -20,4 +20,8 @@ public interface CustomerService {
     void createMany(List<CreateCustomerRequest> createCustomerRequestList);
 
     ProductClientProductResponse getProduct(Long productId);
+
+    Long getByUsername(String username);
+
+    void updateExternal(UpdateCustomerRequest updateCustomerRequest);
 }

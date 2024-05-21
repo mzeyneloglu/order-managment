@@ -54,4 +54,13 @@ public class CustomerController {
     public ProductClientProductResponse getProduct(@RequestHeader Long productId){
         return customerService.getProduct(productId);
     }
+    @GetMapping("get-id-by-username/{username}")
+    public Long getByUsername(@PathVariable String username){
+        return customerService.getByUsername(username);
+    }
+
+    @PostMapping("/update-external")
+    public void updateExternal(@RequestBody UpdateCustomerRequest updateCustomerRequest){
+        customerService.updateExternal(updateCustomerRequest);
+    }
 }

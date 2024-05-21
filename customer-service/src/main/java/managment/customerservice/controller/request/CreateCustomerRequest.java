@@ -13,4 +13,5 @@ public class CreateCustomerRequest {
     private String customerEmail;
     private String customerPhoneNumber;
     private String customerAddress;
+    private String customerUsername;
 }

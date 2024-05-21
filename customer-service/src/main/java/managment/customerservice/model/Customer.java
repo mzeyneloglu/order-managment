@@ -23,4 +23,6 @@ public class Customer {
     private String address;
     @Column(name = "PHONE")
     private String phone;
+    @Column(name = "USERNAME")
+    private String username;
 }
