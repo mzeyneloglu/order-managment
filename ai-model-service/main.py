@@ -1,4 +1,5 @@
-from response.response_state import VoiceInfoResponse, RecognizerState, Request, OrderResponse
+from response.response_state import (VoiceInfoResponse, RecognizerState, Request, OrderResponse, CourierClientResponse
+,CustomerClientResponse, ProductClientResponse,BaseModel)
 from fastapi import FastAPI, BackgroundTasks, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -86,9 +87,21 @@ async def stop_recording(request: Request):
             print(request_body)
             order_response_data = make_request(java_api_url, request_body)
             logging.info(f"Response data: {order_response_data}")
-            order_response = OrderResponse(**order_response_data)
-            print(order_response)
-            return order_response
+
+            # Yeni JSON yapısına göre doğrudan liste olarak işleme
+            order_responses = []
+            for order_data in order_response_data:
+                order_response = OrderResponse(
+                    customerClientResponse=CustomerClientResponse(**order_data.get("customerClientResponse", {})),
+                    productClientResponse=ProductClientResponse(**order_data.get("productClientResponse", {})),
+                    quantity=order_data.get("quantity"),
+                    dateOfOrder=order_data.get("dateOfOrder"),
+                    courierClientResponse=CourierClientResponse(**order_data.get("courierClientResponse", {})),
+                    message=order_data.get("message")
+                )
+                order_responses.append(order_response)
+
+            return order_responses
         except requests.exceptions.RequestException as e:
             logging.error(f"Request exception: {e}")
             raise HTTPException(status_code=500, detail=str(e))

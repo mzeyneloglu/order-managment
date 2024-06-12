@@ -21,4 +21,6 @@ public class ProductClientResponse {
     private String productCategory;
     @JsonProperty("productTicketNo")
     private String productTicketNo;
+    @JsonProperty("imageUrl")
+    private String imageUrl;
 }

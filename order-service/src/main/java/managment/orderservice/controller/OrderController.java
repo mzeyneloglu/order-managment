@@ -3,11 +3,15 @@ package managment.orderservice.controller;
 import jakarta.ws.rs.Path;
 import lombok.RequiredArgsConstructor;
 import managment.orderservice.constants.ApiEndpoints;
+import managment.orderservice.controller.request.ControlOrderRequest;
 import managment.orderservice.controller.request.SpeechToTextRequest;
 import managment.orderservice.controller.response.OrderResponse;
+import managment.orderservice.controller.response.OrderResponseList;
 import managment.orderservice.service.OrderService;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(ApiEndpoints.END_POINT)
@@ -17,10 +21,8 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping("/create-order")
-    public OrderResponse createOrder(@RequestHeader Long customerId,
-                                     @RequestHeader Long productId,
-                                     @RequestHeader int quantity){
-        return orderService.createOrder(customerId, productId, quantity);
+    public OrderResponseList createOrder(ControlOrderRequest controlOrderRequest){
+        return orderService.createOrder(controlOrderRequest);
     }
     @GetMapping("/get-order/{orderId}")
     public OrderResponse getOrder(@PathVariable Long orderId){
@@ -34,8 +36,18 @@ public class OrderController {
     }
 
     @PostMapping("/create-order-with-voice")
-    public OrderResponse createOrderWithVoice(@RequestBody SpeechToTextRequest request){
+    public OrderResponseList createOrderWithVoice(@RequestBody SpeechToTextRequest request){
         return orderService.createOrderWithVoice(request);
+    }
+
+    @GetMapping("/get-orders/{customerId}")
+    public OrderResponseList getOrders(@PathVariable Long customerId){
+        return orderService.getOrders(customerId);
+    }
+
+    @PostMapping("/delete-order/{orderId}")
+    public void deleteOrder(@PathVariable Long orderId){
+        orderService.deleteOrder(orderId);
     }
 
 }

@@ -1,0 +1,52 @@
+{
+	"orders": [
+		{
+			"customerClientResponse": {
+				"customerId": 1,
+				"customerName": "Muhammet Can",
+				"customerSurname": "Zeyneloglu",
+				"customerEmail": "mc.zeyneloglu@gmail.com",
+				"customerAddress": "Talas, KAYSERİ",
+				"customerPhone": "05465904577"
+			},
+			"productClientResponse": {
+				"productId": 1,
+				"productName": "Lenovo Legion 5 Pro",
+				"productPrice": 1600,
+				"productDescription": "5th Gen AMD Ryzen 7, 16GB RAM, 512GB SSD, RTX 3060",
+				"productCategory": "Laptops",
+				"productTicketNo": "A1"
+			},
+			"quantity": 1,
+			"dateOfOrder": "23-05-2024",
+			"courierClientResponse": {
+				"packageStatus": "GETTING_READY"
+			},
+			"message": "Order created successfully"
+		},
+		{
+			"customerClientResponse": {
+				"customerId": 1,
+				"customerName": "Muhammet Can",
+				"customerSurname": "Zeyneloglu",
+				"customerEmail": "mc.zeyneloglu@gmail.com",
+				"customerAddress": "Talas, KAYSERİ",
+				"customerPhone": "05465904577"
+			},
+			"productClientResponse": {
+				"productId": 2,
+				"productName": "Samsung Galaxy S21",
+				"productPrice": 800,
+				"productDescription": "128GB, 8GB RAM, Exynos 2100, 6.2-inch Dynamic AMOLED",
+				"productCategory": "Smartphones",
+				"productTicketNo": "A2"
+			},
+			"quantity": 1,
+			"dateOfOrder": "23-05-2024",
+			"courierClientResponse": {
+				"packageStatus": "GETTING_READY"
+			},
+			"message": "Order created successfully"
+		}
+	]
+}

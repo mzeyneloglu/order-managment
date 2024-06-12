@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(ApiEndpoints.END_POINT)
@@ -16,7 +18,7 @@ public class SpeechRecognitionController {
 
     @PostMapping("/with-voice-order")
     @ResponseStatus(HttpStatus.OK)
-    public OrderResponse withVoiceOrder(@RequestBody SpeechTextRequest request) {
+    public List<OrderResponse> withVoiceOrder(@RequestBody SpeechTextRequest request) {
         return speechRecognitionService.withVoiceOrder(request);
 
     }

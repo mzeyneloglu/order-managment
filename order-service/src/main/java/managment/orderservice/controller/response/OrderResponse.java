@@ -9,6 +9,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class OrderResponse {
+    @JsonProperty("orderId")
+    private Long orderId;
     @JsonProperty("customerClientResponse")
     private CustomerClientResponse customerClientResponse;
     @JsonProperty("productClientResponse")

@@ -23,7 +23,7 @@ public class InventoryServiceImpl implements InventoryService {
     private final RestTemplate restTemplate;
     @Override
     public InventoryCreateResponse create(Long productId, int quantity) {
-        ProductClientResponse productClientResponse = restTemplate.getForObject("http://localhost:9191/account-service/api/product/get-product/"
+        ProductClientResponse productClientResponse = restTemplate.getForObject("http://localhost:9191/product-service/api/product/get-product/"
                 + productId, ProductClientResponse.class);
 
         if (ObjectUtils.isEmpty(productClientResponse))

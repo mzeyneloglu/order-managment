@@ -17,4 +17,5 @@ public class ProductClientResponse {
     private String productDescription;
     private String productCategory;
     private String productTicketNo;
+    private String imageUrl;
 }

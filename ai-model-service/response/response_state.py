@@ -27,6 +27,7 @@ class ProductClientResponse(BaseModel):
     productDescription: Optional[str] = None
     productCategory: Optional[str] = None
     productTicketNo: Optional[str] = None
+    imageUrl: Optional[str] = None
 
 class CourierClientResponse(BaseModel):
     packageStatus: Optional[str] = None

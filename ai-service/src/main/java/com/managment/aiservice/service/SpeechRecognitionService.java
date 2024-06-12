@@ -8,6 +8,7 @@ import com.managment.aiservice.controller.response.OrderResponse;
 import com.managment.aiservice.controller.response.ProductClientResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -28,7 +29,7 @@ public class SpeechRecognitionService {
     private final RestTemplate restTemplate;
     private final HttpHeaders headers = new HttpHeaders();
 
-    public OrderResponse withVoiceOrder(SpeechTextRequest request) {
+    public List<OrderResponse> withVoiceOrder(SpeechTextRequest request) {
         JSONObject obj = new JSONObject(request);
         String text = obj.getString("speechText");
         Long customerId = obj.getLong("customerId");
@@ -38,7 +39,7 @@ public class SpeechRecognitionService {
         // ------ logged ------
         log.info("matches: {}", matches);
 
-        String url = "http://localhost:9191/order-service/api/order/create-order-with-voice";
+        String url = "http://localhost:8183/api/order/create-order-with-voice";
 
         ExternalRequestBody externalRequestBody = new ExternalRequestBody();
         externalRequestBody.setCustomerId(customerId);
@@ -51,37 +52,50 @@ public class SpeechRecognitionService {
         HttpEntity<ExternalRequestBody> requestEntity = new HttpEntity<>(externalRequestBody, headers);
 
         String jsonResponse = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class).getBody();
+        JSONObject jsonObject = new JSONObject(jsonResponse);
+        JSONArray ordersArray = jsonObject.getJSONArray("orders");
 
-        CustomerClientResponse customerClientResponse = new CustomerClientResponse();
-        ProductClientResponse productClientResponse = new ProductClientResponse();
-        CourierClientResponse courierClientResponse = new CourierClientResponse();
-        OrderResponse orderResponse = new OrderResponse();
+        List<OrderResponse> orderResponses = new ArrayList<>();
 
-        JSONObject response = new JSONObject(jsonResponse);
-        log.info("response: {}", response);
-        customerClientResponse.setCustomerAddress(response.getJSONObject("customerClientResponse").getString("customerAddress"));
-        customerClientResponse.setCustomerEmail(response.getJSONObject("customerClientResponse").getString("customerEmail"));
-        customerClientResponse.setCustomerName(response.getJSONObject("customerClientResponse").getString("customerName"));
-        customerClientResponse.setCustomerPhone(response.getJSONObject("customerClientResponse").getString("customerPhone"));
-        customerClientResponse.setCustomerSurname(response.getJSONObject("customerClientResponse").getString("customerSurname"));
-        customerClientResponse.setCustomerId(response.getJSONObject("customerClientResponse").getLong("customerId"));
+        for (int i = 0; i < ordersArray.length(); i++) {
+            JSONObject orderObject = ordersArray.getJSONObject(i);
 
-        productClientResponse.setProductCategory(response.getJSONObject("productClientResponse").getString("productCategory"));
-        productClientResponse.setProductDescription(response.getJSONObject("productClientResponse").getString("productDescription"));
-        productClientResponse.setProductPrice(response.getJSONObject("productClientResponse").getDouble("productPrice"));
-        productClientResponse.setProductTicketNo(response.getJSONObject("productClientResponse").getString("productTicketNo"));
-        productClientResponse.setProductName(response.getJSONObject("productClientResponse").getString("productName"));
-        productClientResponse.setProductId(response.getJSONObject("productClientResponse").getLong("productId"));
+            CustomerClientResponse customerClientResponse = new CustomerClientResponse();
+            ProductClientResponse productClientResponse = new ProductClientResponse();
+            CourierClientResponse courierClientResponse = new CourierClientResponse();
+            OrderResponse orderResponse = new OrderResponse();
 
-        courierClientResponse.setPackageStatus(response.getJSONObject("courierClientResponse").getString("packageStatus"));
+            JSONObject customerObject = orderObject.getJSONObject("customerClientResponse");
+            customerClientResponse.setCustomerAddress(customerObject.getString("customerAddress"));
+            customerClientResponse.setCustomerEmail(customerObject.getString("customerEmail"));
+            customerClientResponse.setCustomerName(customerObject.getString("customerName"));
+            customerClientResponse.setCustomerPhone(customerObject.getString("customerPhone"));
+            customerClientResponse.setCustomerSurname(customerObject.getString("customerSurname"));
+            customerClientResponse.setCustomerId(customerObject.getLong("customerId"));
 
-        orderResponse.setDateOfOrder(response.getString("dateOfOrder"));
-        orderResponse.setQuantity(response.getInt("quantity"));
-        orderResponse.setMessage(response.getString("message"));
-        orderResponse.setCustomerClientResponse(customerClientResponse);
-        orderResponse.setProductClientResponse(productClientResponse);
-        orderResponse.setCourierClientResponse(courierClientResponse);
-        return orderResponse;
+            JSONObject productObject = orderObject.getJSONObject("productClientResponse");
+            productClientResponse.setProductCategory(productObject.getString("productCategory"));
+            productClientResponse.setProductDescription(productObject.getString("productDescription"));
+            productClientResponse.setProductPrice(productObject.getDouble("productPrice"));
+            productClientResponse.setProductTicketNo(productObject.getString("productTicketNo"));
+            productClientResponse.setProductName(productObject.getString("productName"));
+            productClientResponse.setProductId(productObject.getLong("productId"));
+            productClientResponse.setImageUrl(productObject.getString("imageUrl"));
+
+            JSONObject courierObject = orderObject.getJSONObject("courierClientResponse");
+            courierClientResponse.setPackageStatus(courierObject.getString("packageStatus"));
+
+            orderResponse.setDateOfOrder(orderObject.getString("dateOfOrder"));
+            orderResponse.setQuantity(orderObject.getInt("quantity"));
+            orderResponse.setMessage(orderObject.getString("message"));
+            orderResponse.setCustomerClientResponse(customerClientResponse);
+            orderResponse.setProductClientResponse(productClientResponse);
+            orderResponse.setCourierClientResponse(courierClientResponse);
+
+            orderResponses.add(orderResponse);
+        }
+
+        return orderResponses;
 
     }
 
