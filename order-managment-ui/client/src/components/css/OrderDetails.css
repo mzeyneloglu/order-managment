@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poetsen+One&display=swap');
+.card__main {
+    display:  flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 5vh;
+    flex-direction: column;
+    gap: 10vh;
+    margin-bottom: 10vh;
+    font-family: "Poetsen One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+.card {
+    border: 0.1px groove black;
+    box-shadow: 4px 8px 8px #aaa;
+    height:60vh;
+    width: 80vh;
+
+}
+
+.card__title {
+    text-align: center;
+    margin-top: 2vh;
+    font-size: 24px;
+
+}
+
+.card__content {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10vh;
+    font-family: "Poetsen One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.card__content__items {
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    height: 20vh;
+    width: 20vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.img {
+    float: left;
+    height: 10vh;
+    width: 12vh;
+    margin-bottom: 2vh;
+}
+
+.item__names {
+
+    float: right;
+    margin-left: 5vh;
+    margin-top: 2vh;
+
+
+}
+
+
+.textFieldWrapper {
+    margin-bottom: 16px; 
+}
+
+
+.order-card {
+    display: block;
+    position: relative;
+    max-width: 262px;
+    background-color: #f2f8f9;
+    border-radius: 4px;
+    box-shadow: #aaa 0 0 8px;
+    text-decoration: none;
+    z-index: 0;
+    overflow: hidden;
+
+  &:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: -16px;
+    right: -16px;
+    background: #83df93;
+    height: 36px;
+    width: 36px;
+    border-radius: 32px;
+    transform: scale(1);
+    transform-origin: 50% 50%;
+    transition: transform 0.25s ease-out;
+  }
+
+  &:hover:before {
+    transform: scale(21);
+  }
+}
+
+#buttonWrapper{
+    background-color: gray;
+    color: white;
+}
+
+.order-card:hover {
+    span {
+        color: #080101;
+    }
+    .card-text{
+        color: #121212;
+    }
+    #buttonWrapper {
+    background-color: rgb(132, 66, 66);
+    color: white;
+    font-weight: 400;
+    font-style: normal;
+    font-size: larger;
+    
+    }
+    .span1{
+        color: #080101;
+    }
+
+    p{
+        color: white;
+    }
+    
+  }
+

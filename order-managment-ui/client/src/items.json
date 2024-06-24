@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "name": "Lenovo Legion 5 Pro",
+    "description": "5th Gen AMD Ryzen 7, 16GB RAM, 512GB SSD, RTX 3060",
+    "category": "Laptops",
+    "priceCents": 160000,
+    "discount": 0.15,
+    "ticketNo": "A1",
+    "src": "https://resim.epey.com/718289/m_lenovo-legion-5-pro-82jd002atx-6.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Samsung Galaxy S21",
+    "description": "128GB, 8GB RAM, Exynos 2100, 6.2-inch Dynamic AMOLED",
+    "category": "Smartphones",
+    "priceCents": 80000,
+    "discount": 0.1,
+    "ticketNo": "A2",
+    "src": "https://cdn.akakce.com/z/samsung/samsung-galaxy-s21-fe-5g-128-gb-gri.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Sony WH-1000XM4",
+    "description": "Wireless Noise-Canceling Over-Ear Headphones",
+    "category": "Audio",
+    "priceCents": 300000,
+    "discount": 0.2,
+    "ticketNo": "A3",
+    "src": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR75ncpV6vUo-ZePveCcPnMgwyiJJ-QimPh_ozJaWLhwA&s"
+  },
+  {
+    "id": 4,
+    "name": "Apple Watch Series 6",
+    "description": "GPS, 44mm, Space Gray Aluminum Case with Black Sport Band",
+    "category": "Wearables",
+    "priceCents": 400000,
+    "discount": 0.25,
+    "ticketNo": "A4",
+    "src": "https://resim.epey.com/602908/m_apple-watch-series-6-44mm-uzay-grisi-aluminyum-kasa-ve-spor-kordon-4.jpg"
+  },
+  { 
+    "id": 5,
+    "name": "Canon EOS R5",
+    "description": "45MP Full-Frame Mirrorless Camera, 8K Video, 5-axis IBIS",
+    "category": "Cameras",
+    "priceCents": 1500000,
+    "discount": 0.3,
+    "ticketNo": "A5",
+    "src": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRy9BwbpeJo56uGr4dvmlwjr6J8F6KL0kO9R1uuzKSI6g&s"
+  },
+  { 
+    "id": 6,
+    "name": "Nike Air Zoom Pegasus 37",
+    "description": "Men's Running Shoe, Lightweight, Cushioned",
+    "category": "Footwear",
+    "priceCents": 12000,
+    "discount": 0.05,
+    "ticketNo": "A6",
+    "src": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2lOrvdHD_ytu6dTvKtjsz5csFN2IhD-_ps_tJEhVorhGtgUkHzP3o_r4xslOGj3zbQcE&usqp=CAU"
+  },
+  { 
+    "id": 7,
+    "name": "Dyson V11 Torque Drive",
+    "description": "Cordless Vacuum Cleaner, Powerful Suction, LCD Screen",
+    "category": "Home Appliances",
+    "priceCents": 60000,
+    "discount": 0.18,
+    "ticketNo": "A7",
+    "src": "https://cdn.akakce.com/dyson/dyson-v11-torque-drive-extra-dikey-z.jpg"
+  },
+  { 
+    "id": 8,
+    "name": "PlayStation 5",
+    "description": "Next-gen Console, 825GB SSD, 8K Output",
+    "category": "Gaming",
+    "priceCents": 50000,
+    "discount": 0.12,
+    "ticketNo": "A8",
+    "src": "https://resim.epey.com/908934/m_sony-playstation-5-slim-digital-edition-1.jpg"
+  }
+]

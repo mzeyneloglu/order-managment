@@ -1,0 +1,15 @@
+.welcome_msg {
+    font-size: 24px;
+    margin-top: -0.8vh;
+    margin-left: 7vh;
+    color: rgb(45, 56, 65);
+
+}
+
+.comp_name {
+
+    margin-left: 3vh;
+    font-size: 33px;
+    margin-top: 1vh;
+    color: antiquewhite
+}

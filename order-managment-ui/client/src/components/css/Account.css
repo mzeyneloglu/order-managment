@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poetsen+One&display=swap');
+
+
+.App {
+    display: flex;
+    flex: 1;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    font-family: "Poetsen One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  fieldset {
+    display: flex;
+    width: 480px;
+    padding: 16px;
+    border: 1px solid #12234a;
+    border-radius: 4px;
+    flex-direction: column;
+    
+  }
+  
+  label {
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+  
+  sup {
+    color: red;
+    top: -2px;
+    font-size: 95%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+  }
+  
+  input,
+  select {
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    height: 32px;
+    padding: 0 8px;
+  }
+  
+  .Field {
+    position: relative;
+    padding-bottom: 20x;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .FieldError {
+    position: absolute;
+    bottom: -20px;
+    color: red;
+    font-size: 12px;
+
+  }
+  
+  .Row {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  #button {
+    padding: 12px;
+    width: 240px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    color: white;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 30px;
+    position: relative;
+    margin-left: 85px;
+  }
+  
+  #button:disabled,
+  #button[disabled] {
+    border: 1px solid #fffcfc;
+    background-color: #12234a;
+    color: #ffffff;
+    cursor: not-allowed;
+  }
+
+  #button:hover{
+    background-color: #0f172a;
+    color: #fffcfc;
+  }
+
+  #button:enabled,
+  #button[enabled] {
+    text-decoration: none; 
+          border: none; 
+          padding: 12px 40px; 
+          font-size: 16px; 
+          background-color: rgb(235, 138, 2); 
+          color: #fff; 
+          border-radius: 5px; 
+          box-shadow: 7px 6px 28px 1px rgba(0, 0, 0, 0.24); 
+  }
+
+#button[enabled],
+#button[enabled]:active {
+    background-color: #3e8e41;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+  }
+

@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poetsen+One&display=swap');
+
+.main-login {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 25vh;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Poetsen One", sans-serif;
+    font-style: normal;
+    font-size: 32px;
+    margin-bottom: 5vh;
+}
+.wrong {
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+    font-size: 24px;
+}
